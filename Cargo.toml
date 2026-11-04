@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "merlin-framework",
+    "scheduler-driver",
+]
+resolver = "2"
