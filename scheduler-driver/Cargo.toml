@@ -1,0 +1,10 @@
+[package]
+name = "scheduler-driver"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+merlin-framework = { path = "../merlin-framework" }
+
+[lib]
+path = "src/lib.rs"
