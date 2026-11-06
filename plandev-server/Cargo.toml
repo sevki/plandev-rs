@@ -1,0 +1,19 @@
+[package]
+name = "plandev-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+plandev-contract = { path = "../plandev-contract" }
+async-graphql = { version = "7", features = ["dynamic-schema"] }
+async-graphql-axum = "7"
+axum = { version = "0.8", features = ["ws"] }
+tokio = { version = "1", features = ["full"] }
+futures-util = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+tower-http = { version = "0.6", features = ["cors"] }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
