@@ -38,6 +38,10 @@ the same SQLite connection for reads, Toasty for typed domain writes;
 (b) Toasty everywhere with a macro that generates per-model filter translation.
 Decision pending.
 
+## Testing
+
+See `conformance/README.md`: manifest-vs-schema checks plus the UI's own Playwright e2e suite run against this server.
+
 ## Milestones
 
 1. Skeleton: server boots, login/session, schema serves every contract root
