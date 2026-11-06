@@ -1,0 +1,5892 @@
+[
+ {
+  "key": "APPLY_ACTIVITIES_BY_FILTER",
+  "kind": "mutation",
+  "name": "ApplyActivitiesByFilter",
+  "vars": [
+   {
+    "name": "filterId",
+    "type": "Int!"
+   },
+   {
+    "name": "simulationDatasetId",
+    "type": "Int!"
+   },
+   {
+    "name": "seqId",
+    "type": "String!"
+   },
+   {
+    "name": "timeRangeEnd",
+    "type": "String!"
+   },
+   {
+    "name": "timeRangeStart",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "applyActivitiesByFilter",
+    "field": "assignActivitiesByFilter",
+    "args": [
+     "filterId",
+     "simulationDatasetId",
+     "seqId",
+     "timeRangeEnd",
+     "timeRangeStart"
+    ]
+   }
+  ],
+  "text": "mutation ApplyActivitiesByFilter(\n      $filterId: Int!,\n      $simulationDatasetId: Int!,\n      $seqId: String!,\n      $timeRangeEnd: String!,\n      $timeRangeStart: String!\n    ) {\n      applyActivitiesByFilter: assignActivitiesByFilter(\n        filterId: $filterId,\n        simulationDatasetId: $simulationDatasetId,\n        seqId: $seqId,\n        timeRangeEnd: $timeRangeEnd,\n        timeRangeStart: $timeRangeStart\n      ) {\n        success\n      }\n    }"
+ },
+ {
+  "key": "APPLY_PRESET_TO_ACTIVITY",
+  "kind": "mutation",
+  "name": "ApplyPresetToActivity",
+  "vars": [
+   {
+    "name": "presetId",
+    "type": "Int!"
+   },
+   {
+    "name": "activityId",
+    "type": "Int!"
+   },
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "apply_preset_to_activity",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation ApplyPresetToActivity($presetId: Int!, $activityId: Int!, $planId: Int!) {\n      apply_preset_to_activity(args: {\n        _preset_id: $presetId,\n        _activity_id: $activityId,\n        _plan_id: $planId\n      }) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CANCEL_ACTION_RUN",
+  "kind": "mutation",
+  "name": "CancelActionRun",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_action_run_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation CancelActionRun($id: Int!) {\n      update_action_run_by_pk(\n        pk_columns: { id: $id }, _set: {canceled: true}\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CANCEL_SCHEDULING_REQUEST",
+  "kind": "mutation",
+  "name": "CancelSchedulingRequest",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_scheduling_request",
+    "args": [
+     "where",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation CancelSchedulingRequest($id: Int!) {\n      update_scheduling_request(where: { analysis_id: { _eq: $id } }, _set: {\n        canceled: true\n      }) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "CANCEL_SIMULATION",
+  "kind": "mutation",
+  "name": "CancelSim",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_simulation_dataset_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation CancelSim($id: Int!) {\n      update_simulation_dataset_by_pk(pk_columns: {id: $id}, _set: {\n        canceled: true\n      }) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CHECK_CONSTRAINTS",
+  "kind": "query",
+  "name": "CheckConstraints",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   },
+   {
+    "name": "force",
+    "type": "Boolean!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintRunResponses",
+    "field": "constraintViolations",
+    "args": [
+     "planId",
+     "force"
+    ]
+   }
+  ],
+  "text": "query CheckConstraints($planId: Int!, $force: Boolean!) {\n      constraintRunResponses: constraintViolations(planId: $planId, force: $force) {\n        requestId\n        constraintsRun {\n          success\n          constraintId\n          constraintInvocationId\n          constraintName\n          constraintRevision\n          results {\n            resourceIds\n            gaps {\n              end\n              start\n            }\n            violations {\n              message\n              activityInstanceIds\n              windows {\n                end\n                start\n              }\n            }\n          }\n          errors {\n            message\n            stack\n            location {\n              column\n              line\n            }\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "CHECK_MODEL_COMPATIBILITY_FOR_PLAN",
+  "kind": "mutation",
+  "name": "CheckModelCompatabilityForPlan",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "new_model_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "check_model_compatibility_for_plan",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation CheckModelCompatabilityForPlan($plan_id: Int!, $new_model_id: Int!) {\n      check_model_compatibility_for_plan(args: { _plan_id: $plan_id, _new_model_id: $new_model_id } ) {\n        result\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTION_DEFINITION",
+  "kind": "mutation",
+  "name": "CreateActionDefinition",
+  "vars": [
+   {
+    "name": "actionDefinitionInsertInput",
+    "type": "action_definition_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_action_definition_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateActionDefinition($actionDefinitionInsertInput: action_definition_insert_input!) {\n      insert_action_definition_one(object: $actionDefinitionInsertInput) {\n        id\n        versions {\n          revision\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTION_DEFINITION_VERSION",
+  "kind": "mutation",
+  "name": "CreateActionDefinitionVersion",
+  "vars": [
+   {
+    "name": "version",
+    "type": "action_definition_version_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_action_definition_version_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateActionDefinitionVersion($version: action_definition_version_insert_input!) {\n      insert_action_definition_version_one(object: $version) {\n        action_definition_id\n        revision\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTION_RUN",
+  "kind": "mutation",
+  "name": "CreateActionRun",
+  "vars": [
+   {
+    "name": "actionRunInsertInput",
+    "type": "action_run_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_action_run_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateActionRun($actionRunInsertInput: action_run_insert_input!) {\n      insert_action_run_one(object: $actionRunInsertInput) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTIVITY_DIRECTIVE",
+  "kind": "mutation",
+  "name": "CreateActivityDirective",
+  "vars": [
+   {
+    "name": "activityDirectiveInsertInput",
+    "type": "activity_directive_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_activity_directive_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateActivityDirective($activityDirectiveInsertInput: activity_directive_insert_input!) {\n      insert_activity_directive_one(object: $activityDirectiveInsertInput) {\n        anchor_id\n        anchored_to_start\n        arguments\n        created_at\n        id\n        last_modified_arguments_at\n        last_modified_at\n        metadata\n        name\n        plan_id\n        source_scheduling_goal_id\n        source_scheduling_goal_invocation_id\n        start_offset\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        type\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTIVITY_DIRECTIVES",
+  "kind": "mutation",
+  "name": "CreateActivityDirectives",
+  "vars": [
+   {
+    "name": "activityDirectivesInsertInput",
+    "type": "[activity_directive_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_activity_directive",
+    "args": [
+     "objects"
+    ]
+   }
+  ],
+  "text": "mutation CreateActivityDirectives($activityDirectivesInsertInput: [activity_directive_insert_input!]!) {\n      insert_activity_directive(objects: $activityDirectivesInsertInput) {\n        returning {\n          id\n          type\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTIVITY_DIRECTIVE_TAGS",
+  "kind": "mutation",
+  "name": "CreateActivityDirectiveTags",
+  "vars": [
+   {
+    "name": "tags",
+    "type": "[activity_directive_tags_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_activity_directive_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreateActivityDirectiveTags($tags: [activity_directive_tags_insert_input!]!) {\n      insert_activity_directive_tags(objects: $tags, on_conflict: {\n        constraint: activity_directive_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "CREATE_ACTIVITY_PRESET",
+  "kind": "mutation",
+  "name": "CreateActivityPreset",
+  "vars": [
+   {
+    "name": "activityPresetInsertInput",
+    "type": "activity_presets_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_activity_presets_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateActivityPreset($activityPresetInsertInput: activity_presets_insert_input!) {\n      insert_activity_presets_one(object: $activityPresetInsertInput) {\n        arguments\n        associated_activity_type\n        id\n        model_id\n        name\n        owner\n      }\n    }"
+ },
+ {
+  "key": "CREATE_CHANNEL_DICTIONARY",
+  "kind": "mutation",
+  "name": "CreateChannelDictionary",
+  "vars": [
+   {
+    "name": "channelDictionary",
+    "type": "channel_dictionary_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createChannelDictionary",
+    "field": "insert_channel_dictionary_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateChannelDictionary($channelDictionary: channel_dictionary_insert_input!) {\n      createChannelDictionary: insert_channel_dictionary_one(object: $channelDictionary) {\n        created_at\n        id\n        mission\n        parsed_json\n        version\n      }\n    }"
+ },
+ {
+  "key": "CREATE_CONSTRAINT",
+  "kind": "mutation",
+  "name": "CreateConstraint",
+  "vars": [
+   {
+    "name": "constraint",
+    "type": "constraint_metadata_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraint",
+    "field": "insert_constraint_metadata_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateConstraint($constraint: constraint_metadata_insert_input!) {\n      constraint: insert_constraint_metadata_one(object: $constraint) {\n        id\n        name\n        description\n        owner\n        public\n        tags {\n          tag_id\n        }\n        versions {\n          revision\n          definition\n          tags {\n            tag_id\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_CONSTRAINT_DEFINITION",
+  "kind": "mutation",
+  "name": "CreateConstraintDefinition",
+  "vars": [
+   {
+    "name": "constraintDefinition",
+    "type": "constraint_definition_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintDefinition",
+    "field": "insert_constraint_definition_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateConstraintDefinition($constraintDefinition: constraint_definition_insert_input!) {\n      constraintDefinition: insert_constraint_definition_one(object: $constraintDefinition) {\n        constraint_id\n        definition\n        revision\n      }\n    }"
+ },
+ {
+  "key": "CREATE_CONSTRAINT_MODEL_SPECIFICATION",
+  "kind": "mutation",
+  "name": "CreateConstraintModelSpecification",
+  "vars": [
+   {
+    "name": "constraintModelSpecification",
+    "type": "constraint_model_specification_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintModelSpecification",
+    "field": "insert_constraint_model_specification_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateConstraintModelSpecification($constraintModelSpecification: constraint_model_specification_insert_input!) {\n      constraintModelSpecification: insert_constraint_model_specification_one(object: $constraintModelSpecification) {\n        constraint_id\n        constraint_revision\n        model_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_CONSTRAINT_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "CreateConstraintSpecification",
+  "vars": [
+   {
+    "name": "constraintPlanSpecification",
+    "type": "constraint_specification_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createConstraintSpec",
+    "field": "insert_constraint_specification_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateConstraintSpecification($constraintPlanSpecification: constraint_specification_insert_input!) {\n      createConstraintSpec: insert_constraint_specification_one(object: $constraintPlanSpecification) {\n        arguments\n        constraint_id\n        enabled\n        order\n        invocation_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_DERIVATION_GROUP",
+  "kind": "mutation",
+  "name": "CreateDerivationGroup",
+  "vars": [
+   {
+    "name": "derivationGroup",
+    "type": "derivation_group_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createDerivationGroup",
+    "field": "insert_derivation_group_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateDerivationGroup($derivationGroup: derivation_group_insert_input!) {\n      createDerivationGroup: insert_derivation_group_one(object: $derivationGroup) {\n        name\n      }\n    }"
+ },
+ {
+  "key": "CREATE_DICTIONARY",
+  "kind": "mutation",
+  "name": "CreateDictionary",
+  "vars": [
+   {
+    "name": "dictionary",
+    "type": "String!"
+   },
+   {
+    "name": "persistDictionaryToFilesystem",
+    "type": "Boolean!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createDictionary",
+    "field": "uploadDictionary",
+    "args": [
+     "dictionary",
+     "persistDictionaryToFilesystem"
+    ]
+   }
+  ],
+  "text": "mutation CreateDictionary($dictionary: String!, $persistDictionaryToFilesystem: Boolean!) {\n      createDictionary: uploadDictionary(dictionary: $dictionary, persistDictionaryToFilesystem: $persistDictionaryToFilesystem) {\n        command\n        parameter\n        channel\n      }\n    }"
+ },
+ {
+  "key": "CREATE_EXPANSION_SEQUENCE",
+  "kind": "mutation",
+  "name": "CreateExpansionSequence",
+  "vars": [
+   {
+    "name": "sequence",
+    "type": "sequence_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createExpansionSequence",
+    "field": "insert_sequence_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateExpansionSequence($sequence: sequence_insert_input!) {\n      createExpansionSequence: insert_sequence_one(object: $sequence) {\n        seq_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_MODEL",
+  "kind": "mutation",
+  "name": "CreateModel",
+  "vars": [
+   {
+    "name": "model",
+    "type": "mission_model_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createModel",
+    "field": "insert_mission_model_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateModel($model: mission_model_insert_input!) {\n      createModel: insert_mission_model_one(object: $model) {\n        created_at\n        id\n        owner\n      }\n    }"
+ },
+ {
+  "key": "CREATE_MODEL_DERIVATION_GROUP",
+  "kind": "mutation",
+  "name": "CreateModelDerivationGroup",
+  "vars": [
+   {
+    "name": "source",
+    "type": "model_derivation_group_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "modelExternalSourceLink",
+    "field": "insert_model_derivation_group_one",
+    "args": [
+     "object",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreateModelDerivationGroup($source: model_derivation_group_insert_input!) {\n      modelExternalSourceLink: insert_model_derivation_group_one(\n        object: $source,\n        on_conflict: {\n          constraint: model_derivation_group_pkey\n        }\n      ) {\n        derivation_group_name\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PARAMETER_DICTIONARY",
+  "kind": "mutation",
+  "name": "CreateParameterDictionary",
+  "vars": [
+   {
+    "name": "parameterDictionary",
+    "type": "parameter_dictionary_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createParameterDictionary",
+    "field": "insert_parameter_dictionary_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateParameterDictionary($parameterDictionary: parameter_dictionary_insert_input!) {\n      createParameterDictionary: insert_parameter_dictionary_one(object: $parameterDictionary) {\n        created_at\n        id\n        mission\n        parsed_json\n        version\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PARCEL",
+  "kind": "mutation",
+  "name": "CreateParcel",
+  "vars": [
+   {
+    "name": "parcel",
+    "type": "parcel_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createParcel",
+    "field": "insert_parcel_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateParcel($parcel: parcel_insert_input!) {\n      createParcel: insert_parcel_one(object: $parcel) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PARCEL_TO_PARAMETER_DICTIONARIES",
+  "kind": "mutation",
+  "name": "CreateParcelToParameterDictionaries",
+  "vars": [
+   {
+    "name": "parcelToParameterDictionaries",
+    "type": "[parcel_to_parameter_dictionary_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_parcel_to_parameter_dictionary",
+    "args": [
+     "objects"
+    ]
+   }
+  ],
+  "text": "mutation CreateParcelToParameterDictionaries($parcelToParameterDictionaries : [parcel_to_parameter_dictionary_insert_input!]!) {\n      insert_parcel_to_parameter_dictionary(objects: $parcelToParameterDictionaries) {\n        affected_rows\n        returning {\n          parcel_id\n          parameter_dictionary_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN",
+  "kind": "mutation",
+  "name": "CreatePlan",
+  "vars": [
+   {
+    "name": "plan",
+    "type": "plan_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createPlan",
+    "field": "insert_plan_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlan($plan: plan_insert_input!) {\n      createPlan: insert_plan_one(object: $plan) {\n        created_at\n        collaborators {\n          collaborator\n        }\n        duration\n        id\n        is_read_only\n        owner\n        revision\n        start_time\n        updated_at\n        updated_by\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_COLLABORATORS",
+  "kind": "mutation",
+  "name": "CreatePlanCollaborators",
+  "vars": [
+   {
+    "name": "collaborators",
+    "type": "[plan_collaborators_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_plan_collaborators",
+    "args": [
+     "objects"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanCollaborators($collaborators: [plan_collaborators_insert_input!]!) {\n      insert_plan_collaborators(objects: $collaborators){\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_DERIVATION_GROUP",
+  "kind": "mutation",
+  "name": "CreatePlanDerivationGroup",
+  "vars": [
+   {
+    "name": "source",
+    "type": "plan_derivation_group_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "planExternalSourceLink",
+    "field": "insert_plan_derivation_group_one",
+    "args": [
+     "object",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanDerivationGroup($source: plan_derivation_group_insert_input!) {\n      planExternalSourceLink: insert_plan_derivation_group_one(\n        object: $source,\n        on_conflict: {\n          constraint: plan_derivation_group_pkey\n        }\n      ) {\n        derivation_group_name\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_MERGE_REQUEST",
+  "kind": "mutation",
+  "name": "CreatePlanMergeRequest",
+  "vars": [
+   {
+    "name": "source_plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "target_plan_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "create_merge_request",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanMergeRequest($source_plan_id: Int!, $target_plan_id: Int!) {\n      create_merge_request(args: { source_plan_id: $source_plan_id, target_plan_id: $target_plan_id }) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_SNAPSHOT",
+  "kind": "mutation",
+  "name": "CreatePlanSnapshot",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "snapshot_name",
+    "type": "String!"
+   },
+   {
+    "name": "description",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSnapshot",
+    "field": "create_snapshot",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanSnapshot($plan_id: Int!, $snapshot_name: String!, $description: String!) {\n      createSnapshot: create_snapshot(args: { _plan_id: $plan_id, _snapshot_name: $snapshot_name, _description: $description } ) {\n        snapshot_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_SNAPSHOT_TAGS",
+  "kind": "mutation",
+  "name": "CreatePlanSnapshotTags",
+  "vars": [
+   {
+    "name": "tags",
+    "type": "[plan_snapshot_tags_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_plan_snapshot_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanSnapshotTags($tags: [plan_snapshot_tags_insert_input!]!) {\n      insert_plan_snapshot_tags(objects: $tags, on_conflict: {\n        constraint: plan_snapshot_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "CREATE_PLAN_TAGS",
+  "kind": "mutation",
+  "name": "CreatePlanTags",
+  "vars": [
+   {
+    "name": "tags",
+    "type": "[plan_tags_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_plan_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreatePlanTags($tags: [plan_tags_insert_input!]!) {\n      insert_plan_tags(objects: $tags, on_conflict: {\n        constraint: plan_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_CONDITION",
+  "kind": "mutation",
+  "name": "CreateSchedulingCondition",
+  "vars": [
+   {
+    "name": "condition",
+    "type": "scheduling_condition_metadata_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSchedulingCondition",
+    "field": "insert_scheduling_condition_metadata_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingCondition($condition: scheduling_condition_metadata_insert_input!) {\n      createSchedulingCondition: insert_scheduling_condition_metadata_one(object: $condition) {\n        id\n        name\n        description\n        owner\n        public\n        tags {\n          tag_id\n        }\n        versions {\n          revision\n          definition\n          tags {\n            tag_id\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_CONDITION_DEFINITION",
+  "kind": "mutation",
+  "name": "CreateSchedulingConditionDefinition",
+  "vars": [
+   {
+    "name": "conditionDefinition",
+    "type": "scheduling_condition_definition_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "conditionDefinition",
+    "field": "insert_scheduling_condition_definition_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingConditionDefinition($conditionDefinition: scheduling_condition_definition_insert_input!) {\n      conditionDefinition: insert_scheduling_condition_definition_one(object: $conditionDefinition) {\n        condition_id\n        definition\n        revision\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_CONDITION_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "CreateSchedulingSpecCondition",
+  "vars": [
+   {
+    "name": "spec_condition",
+    "type": "scheduling_specification_conditions_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSchedulingSpecCondition",
+    "field": "insert_scheduling_specification_conditions_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingSpecCondition($spec_condition: scheduling_specification_conditions_insert_input!) {\n      createSchedulingSpecCondition: insert_scheduling_specification_conditions_one(object: $spec_condition) {\n        enabled\n        condition_id\n        specification_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_GOAL",
+  "kind": "mutation",
+  "name": "CreateSchedulingGoal",
+  "vars": [
+   {
+    "name": "goal",
+    "type": "scheduling_goal_metadata_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSchedulingGoal",
+    "field": "insert_scheduling_goal_metadata_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingGoal($goal: scheduling_goal_metadata_insert_input!) {\n      createSchedulingGoal: insert_scheduling_goal_metadata_one(object: $goal) {\n        id\n        name\n        description\n        owner\n        public\n        tags {\n          tag_id\n        }\n        versions {\n          revision\n          definition\n          tags {\n            tag_id\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_GOAL_DEFINITION",
+  "kind": "mutation",
+  "name": "CreateSchedulingGoalDefinition",
+  "vars": [
+   {
+    "name": "goalDefinition",
+    "type": "scheduling_goal_definition_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "goalDefinition",
+    "field": "insert_scheduling_goal_definition_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingGoalDefinition($goalDefinition: scheduling_goal_definition_insert_input!) {\n      goalDefinition: insert_scheduling_goal_definition_one(object: $goalDefinition) {\n        goal_id\n        definition\n        revision\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_GOAL_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "CreateSchedulingSpecGoal",
+  "vars": [
+   {
+    "name": "spec_goal",
+    "type": "scheduling_specification_goals_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSchedulingSpecGoal",
+    "field": "insert_scheduling_specification_goals_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingSpecGoal($spec_goal: scheduling_specification_goals_insert_input!) {\n      createSchedulingSpecGoal: insert_scheduling_specification_goals_one(object: $spec_goal) {\n        arguments\n        enabled\n        goal_id\n        priority\n        specification_id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SCHEDULING_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "CreateSchedulingSpec",
+  "vars": [
+   {
+    "name": "spec",
+    "type": "scheduling_specification_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSchedulingSpec",
+    "field": "insert_scheduling_specification_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSchedulingSpec($spec: scheduling_specification_insert_input!) {\n      createSchedulingSpec: insert_scheduling_specification_one(object: $spec) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SEQUENCE_ADAPTATION",
+  "kind": "mutation",
+  "name": "CreateCustomAdaptation",
+  "vars": [
+   {
+    "name": "adaptation",
+    "type": "sequence_adaptation_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSequenceAdaptation",
+    "field": "insert_sequence_adaptation_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateCustomAdaptation($adaptation: sequence_adaptation_insert_input!) {\n      createSequenceAdaptation: insert_sequence_adaptation_one(object: $adaptation) {\n        adaptation\n        name\n        created_at\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SEQUENCE_FILTER",
+  "kind": "mutation",
+  "name": "CreateSequenceFilter",
+  "vars": [
+   {
+    "name": "definition",
+    "type": "sequence_filter_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createSequenceFilter",
+    "field": "insert_sequence_filter_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSequenceFilter($definition: sequence_filter_insert_input!) {\n      createSequenceFilter: insert_sequence_filter_one(object: $definition) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SEQUENCE_TEMPLATE",
+  "kind": "mutation",
+  "name": "AddSequenceTemplate",
+  "vars": [
+   {
+    "name": "activityTypeName",
+    "type": "String!"
+   },
+   {
+    "name": "language",
+    "type": "String!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   },
+   {
+    "name": "name",
+    "type": "String!"
+   },
+   {
+    "name": "parcelId",
+    "type": "Int!"
+   },
+   {
+    "name": "templateDefinition",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "addTemplate",
+    "args": [
+     "activityTypeName",
+     "language",
+     "modelId",
+     "name",
+     "parcelId",
+     "templateDefinition"
+    ]
+   }
+  ],
+  "text": "mutation AddSequenceTemplate($activityTypeName:String!, $language:String!, $modelId:Int!, $name:String!, $parcelId:Int!, $templateDefinition:String!) {\n      addTemplate(activityTypeName: $activityTypeName, language:$language, modelId:$modelId, name:$name, parcelId: $parcelId, templateDefinition: $templateDefinition) {\n        id\n        errors {\n          location {\n            column\n            line\n          }\n          message\n          stack\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_SIMULATION_TEMPLATE",
+  "kind": "mutation",
+  "name": "CreateSimulationTemplate",
+  "vars": [
+   {
+    "name": "simulationTemplateInsertInput",
+    "type": "simulation_template_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_simulation_template_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateSimulationTemplate($simulationTemplateInsertInput: simulation_template_insert_input!) {\n      insert_simulation_template_one(object: $simulationTemplateInsertInput) {\n        arguments\n        description\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_TAG",
+  "kind": "mutation",
+  "name": "CreateTag",
+  "vars": [
+   {
+    "name": "tag",
+    "type": "tags_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_tags_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateTag($tag: tags_insert_input!) {\n      insert_tags_one(object: $tag) {\n        color\n        created_at\n        id\n        name\n        owner\n      }\n    }"
+ },
+ {
+  "key": "CREATE_TAGS",
+  "kind": "mutation",
+  "name": "CreateTags",
+  "vars": [
+   {
+    "name": "tags",
+    "type": "[tags_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation CreateTags($tags: [tags_insert_input!]!) {\n      insert_tags(objects: $tags, on_conflict: {\n        constraint: tags_name_key,\n        update_columns: [color]\n      }) {\n        affected_rows\n        returning {\n          color\n          created_at\n          id\n          name\n          owner\n        }\n      }\n    }"
+ },
+ {
+  "key": "CREATE_USER_SEQUENCE",
+  "kind": "mutation",
+  "name": "CreateUserSequence",
+  "vars": [
+   {
+    "name": "sequence",
+    "type": "user_sequence_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "createUserSequence",
+    "field": "insert_user_sequence_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateUserSequence($sequence: user_sequence_insert_input!) {\n      createUserSequence: insert_user_sequence_one(object: $sequence) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "CREATE_VIEW",
+  "kind": "mutation",
+  "name": "CreateView",
+  "vars": [
+   {
+    "name": "view",
+    "type": "view_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "newView",
+    "field": "insert_view_one",
+    "args": [
+     "object"
+    ]
+   }
+  ],
+  "text": "mutation CreateView($view: view_insert_input!) {\n      newView: insert_view_one(object: $view) {\n        created_at\n        definition\n        id\n        name\n        owner\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "CREATE_WORKSPACE_COLLABORATORS",
+  "kind": "mutation",
+  "name": "CreateWorkspaceCollaborators",
+  "vars": [
+   {
+    "name": "collaborators",
+    "type": "[workspace_collaborators_insert_input!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "insert_workspace_collaborators",
+    "args": [
+     "objects"
+    ]
+   }
+  ],
+  "text": "mutation CreateWorkspaceCollaborators($collaborators: [workspace_collaborators_insert_input!]!) {\n      insert_workspace_collaborators(objects: $collaborators){\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_DIRECTIVES",
+  "kind": "mutation",
+  "name": "DeleteActivityDirectives",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_ids",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteActivityDirectives",
+    "field": "delete_activity_directive",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityDirectives($plan_id: Int!, $activity_ids: [Int!]!) {\n      deleteActivityDirectives: delete_activity_directive(\n        where: { id: { _in: $activity_ids }, _and: { plan_id: { _eq: $plan_id } } }\n      ) {\n        returning {\n          id\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_DIRECTIVES_REANCHOR_PLAN_START",
+  "kind": "mutation",
+  "name": "DeleteActivityDirectivesReanchorPlanStart",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_ids",
+    "type": "_int4!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_activity_by_pk_reanchor_plan_start_bulk",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityDirectivesReanchorPlanStart($plan_id: Int!, $activity_ids: _int4!) {\n      delete_activity_by_pk_reanchor_plan_start_bulk(args: { _plan_id: $plan_id, _activity_ids: $activity_ids }) {\n        change_type\n        affected_row\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_DIRECTIVES_REANCHOR_TO_ANCHOR",
+  "kind": "mutation",
+  "name": "DeleteActivityDirectivesReanchorToAnchor",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_ids",
+    "type": "_int4!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_activity_by_pk_reanchor_to_anchor_bulk",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityDirectivesReanchorToAnchor($plan_id: Int!, $activity_ids: _int4!) {\n      delete_activity_by_pk_reanchor_to_anchor_bulk(args: { _plan_id: $plan_id, _activity_ids: $activity_ids }) {\n        change_type\n        affected_row\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_DIRECTIVES_SUBTREE",
+  "kind": "mutation",
+  "name": "DeleteActivityDirectivesSubtree",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_ids",
+    "type": "_int4!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_activity_by_pk_delete_subtree_bulk",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityDirectivesSubtree($plan_id: Int!, $activity_ids: _int4!) {\n      delete_activity_by_pk_delete_subtree_bulk(args: { _plan_id: $plan_id, _activity_ids: $activity_ids }) {\n        change_type\n        affected_row\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_DIRECTIVE_TAG",
+  "kind": "mutation",
+  "name": "DeleteActivityDirectivesTag",
+  "vars": [
+   {
+    "name": "tag_id",
+    "type": "Int!"
+   },
+   {
+    "name": "directive_id",
+    "type": "Int!"
+   },
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_activity_directive_tags_by_pk",
+    "args": [
+     "directive_id",
+     "plan_id",
+     "tag_id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityDirectivesTag($tag_id: Int!, $directive_id: Int!, $plan_id: Int!) {\n        delete_activity_directive_tags_by_pk(directive_id: $directive_id, plan_id: $plan_id, tag_id: $tag_id) {\n          tag_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_ACTIVITY_PRESET",
+  "kind": "mutation",
+  "name": "DeleteActivityPreset",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteActivityPreset",
+    "field": "delete_activity_presets_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteActivityPreset($id: Int!) {\n      deleteActivityPreset: delete_activity_presets_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_CHANNEL_DICTIONARY",
+  "kind": "mutation",
+  "name": "DeleteChannelDictionary",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteChannelDictionary",
+    "field": "delete_channel_dictionary_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteChannelDictionary($id: Int!) {\n      deleteChannelDictionary: delete_channel_dictionary_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_COMMAND_DICTIONARY",
+  "kind": "mutation",
+  "name": "DeleteCommandDictionary",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteCommandDictionary",
+    "field": "delete_command_dictionary_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteCommandDictionary($id: Int!) {\n      deleteCommandDictionary: delete_command_dictionary_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_CONSTRAINT_INVOCATIONS",
+  "kind": "mutation",
+  "name": "DeleteConstraintInvocations",
+  "vars": [
+   {
+    "name": "constraintInvocationIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteConstraintPlanSpecifications",
+    "field": "delete_constraint_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteConstraintInvocations($constraintInvocationIdsToDelete: [Int!]! = []) {\n      deleteConstraintPlanSpecifications: delete_constraint_specification(\n        where: {\n          invocation_id: { _in: $constraintInvocationIdsToDelete }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_CONSTRAINT_METADATA",
+  "kind": "mutation",
+  "name": "DeleteConstraint",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteConstraintMetadata",
+    "field": "delete_constraint_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteConstraint($id: Int!) {\n      deleteConstraintMetadata: delete_constraint_metadata_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_CONSTRAINT_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "DeleteConstraintModelSpecification",
+  "vars": [
+   {
+    "name": "constraintIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_constraint_model_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteConstraintModelSpecification($constraintIds: [Int!]!, $modelId: Int!) {\n      delete_constraint_model_specification(\n        where: {\n          constraint_id: { _in: $constraintIds },\n          _and: {\n            model_id: { _eq: $modelId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_CONSTRAINT_PLAN_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "DeleteConstraintPlanSpecification",
+  "vars": [
+   {
+    "name": "constraintIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_constraint_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteConstraintPlanSpecification($constraintIds: [Int!]!, $planId: Int!) {\n      delete_constraint_specification(\n        where: {\n          constraint_id: { _in: $constraintIds },\n          _and: {\n            plan_id: { _eq: $planId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_DERIVATION_GROUPS",
+  "kind": "mutation",
+  "name": "DeleteDerivationGroup",
+  "vars": [
+   {
+    "name": "derivationGroupNames",
+    "type": "[String]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteDerivationGroupForPlan",
+    "field": "delete_plan_derivation_group",
+    "args": [
+     "where"
+    ]
+   },
+   {
+    "alias": "deleteDerivationGroup",
+    "field": "delete_derivation_group",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteDerivationGroup($derivationGroupNames: [String]!) {\n      deleteDerivationGroupForPlan: delete_plan_derivation_group(where: { derivation_group_name: { _in: $derivationGroupNames }}) {\n        returning {\n          derivation_group_name\n          plan_id\n        }\n      }\n      deleteDerivationGroup: delete_derivation_group(where: { name: { _in: $derivationGroupNames } }) {\n        returning {\n          name\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_EXPANSION_SEQUENCE",
+  "kind": "mutation",
+  "name": "DeleteExpansionSequence",
+  "vars": [
+   {
+    "name": "seqId",
+    "type": "String!"
+   },
+   {
+    "name": "simulationDatasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteExpansionSequence",
+    "field": "delete_sequence_by_pk",
+    "args": [
+     "seq_id",
+     "simulation_dataset_id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteExpansionSequence($seqId: String!, $simulationDatasetId: Int!) {\n      deleteExpansionSequence: delete_sequence_by_pk(seq_id: $seqId, simulation_dataset_id: $simulationDatasetId) {\n        seq_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_EXPANSION_SEQUENCE_TO_ACTIVITY",
+  "kind": "mutation",
+  "name": "DeleteExpansionSequenceToActivity",
+  "vars": [
+   {
+    "name": "simulation_dataset_id",
+    "type": "Int!"
+   },
+   {
+    "name": "simulated_activity_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "expansionSequence",
+    "field": "delete_sequence_to_simulated_activity_by_pk",
+    "args": [
+     "simulation_dataset_id",
+     "simulated_activity_id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteExpansionSequenceToActivity($simulation_dataset_id: Int!, $simulated_activity_id: Int!) {\n      expansionSequence: delete_sequence_to_simulated_activity_by_pk(\n        simulation_dataset_id: $simulation_dataset_id,\n        simulated_activity_id: $simulated_activity_id\n      ) {\n        seq_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_EXTERNAL_EVENT_TYPE",
+  "kind": "mutation",
+  "name": "DeleteExternalEventType",
+  "vars": [
+   {
+    "name": "names",
+    "type": "[String]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteExternalEventType",
+    "field": "delete_external_event_type",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteExternalEventType($names: [String]!) {\n      deleteExternalEventType: delete_external_event_type(where: {\n        name: { _in: $names }\n      }) {\n        returning {\n          name\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_EXTERNAL_SOURCES",
+  "kind": "mutation",
+  "name": "DeleteExternalSource",
+  "vars": [
+   {
+    "name": "derivationGroupName",
+    "type": "String!"
+   },
+   {
+    "name": "sourceKeys",
+    "type": "[String!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteExternalSource",
+    "field": "delete_external_source",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteExternalSource(\n      $derivationGroupName: String!,\n      $sourceKeys: [String!]!\n    ) {\n      deleteExternalSource: delete_external_source(\n        where: {\n          derivation_group_name: { _eq: $derivationGroupName },\n          key: { _in: $sourceKeys }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_EXTERNAL_SOURCE_TYPE",
+  "kind": "mutation",
+  "name": "DeleteExternalSourceType",
+  "vars": [
+   {
+    "name": "names",
+    "type": "[String]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteExternalSourceType",
+    "field": "delete_external_source_type",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteExternalSourceType($names: [String]!) {\n      deleteExternalSourceType: delete_external_source_type(where: {\n        name: { _in: $names }}) {\n          returning {\n            name\n          }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_MODEL",
+  "kind": "mutation",
+  "name": "DeleteModel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteModel",
+    "field": "delete_mission_model_by_pk",
+    "args": [
+     "id"
+    ]
+   },
+   {
+    "alias": "deleteConstraintModelSpec",
+    "field": "delete_constraint_model_specification",
+    "args": [
+     "where"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingConditionModelSpec",
+    "field": "delete_scheduling_model_specification_conditions",
+    "args": [
+     "where"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingGoalModelSpec",
+    "field": "delete_scheduling_model_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteModel($id: Int!) {\n      deleteModel: delete_mission_model_by_pk(id: $id) {\n        id\n      }\n      deleteConstraintModelSpec: delete_constraint_model_specification(where: { model_id: { _eq: $id } }) {\n        returning {\n          model_id\n        }\n      }\n      deleteSchedulingConditionModelSpec: delete_scheduling_model_specification_conditions(where: { model_id: { _eq: $id } }) {\n        returning {\n          model_id\n        }\n      }\n      deleteSchedulingGoalModelSpec: delete_scheduling_model_specification_goals(where: { model_id: { _eq: $id } }) {\n        returning {\n          model_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_MODEL_DERIVATION_GROUP",
+  "kind": "mutation",
+  "name": "DeleteModelDerivationGroup",
+  "vars": [
+   {
+    "name": "where",
+    "type": "model_derivation_group_bool_exp!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "modelDerivationGroupLink",
+    "field": "delete_model_derivation_group",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteModelDerivationGroup($where: model_derivation_group_bool_exp!) {\n      modelDerivationGroupLink: delete_model_derivation_group(where: $where) {\n        returning {\n          derivation_group_name\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PARAMETER_DICTIONARY",
+  "kind": "mutation",
+  "name": "DeleteParameterDictionary",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteParameterDictionary",
+    "field": "delete_parameter_dictionary_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteParameterDictionary($id: Int!) {\n      deleteParameterDictionary: delete_parameter_dictionary_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PARCEL",
+  "kind": "mutation",
+  "name": "DeleteParcel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteParcel",
+    "field": "delete_parcel_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteParcel($id: Int!) {\n      deleteParcel: delete_parcel_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PARCEL_TO_DICTIONARY_ASSOCIATION",
+  "kind": "mutation",
+  "name": "deleteParcelToDictionaryAssociation",
+  "vars": [
+   {
+    "name": "parameterDictionaryIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "parcelIds",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_parcel_to_parameter_dictionary",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation deleteParcelToDictionaryAssociation($parameterDictionaryIds: [Int!]!, $parcelIds: [Int!]!) {\n        delete_parcel_to_parameter_dictionary(where: { parcel_id: { _in: $parcelIds }, _and: { parameter_dictionary_id: { _in: $parameterDictionaryIds}}} ) {\n          affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PLAN",
+  "kind": "mutation",
+  "name": "DeletePlan",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteDerivationGroupForPlan",
+    "field": "delete_plan_derivation_group",
+    "args": [
+     "where"
+    ]
+   },
+   {
+    "alias": "deletePlan",
+    "field": "delete_plan_by_pk",
+    "args": [
+     "id"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingSpec",
+    "field": "delete_scheduling_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeletePlan($id: Int!) {\n      deleteDerivationGroupForPlan: delete_plan_derivation_group(where: { plan_id: { _eq: $id }}) {\n        returning {\n          plan_id\n        }\n      }\n      deletePlan: delete_plan_by_pk(id: $id) {\n        id\n      }\n      deleteSchedulingSpec: delete_scheduling_specification(where: { plan_id: { _eq: $id } }) {\n        returning {\n          id\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PLAN_COLLABORATOR",
+  "kind": "mutation",
+  "name": "DeletePlanCollaborator",
+  "vars": [
+   {
+    "name": "collaborator",
+    "type": "String!"
+   },
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deletePlanCollaborator",
+    "field": "delete_plan_collaborators_by_pk",
+    "args": [
+     "collaborator",
+     "plan_id"
+    ]
+   }
+  ],
+  "text": "mutation DeletePlanCollaborator($collaborator: String!, $planId: Int!) {\n      deletePlanCollaborator: delete_plan_collaborators_by_pk(collaborator: $collaborator, plan_id: $planId) {\n        collaborator\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PLAN_DERIVATION_GROUP",
+  "kind": "mutation",
+  "name": "DeletePlanExternalSource",
+  "vars": [
+   {
+    "name": "where",
+    "type": "plan_derivation_group_bool_exp!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "planDerivationGroupLink",
+    "field": "delete_plan_derivation_group",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeletePlanExternalSource($where: plan_derivation_group_bool_exp!) {\n      planDerivationGroupLink: delete_plan_derivation_group(where: $where) {\n        returning {\n          derivation_group_name\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PLAN_SNAPSHOT",
+  "kind": "mutation",
+  "name": "DeletePlanSnapshot",
+  "vars": [
+   {
+    "name": "snapshot_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deletePlanSnapshot",
+    "field": "delete_plan_snapshot_by_pk",
+    "args": [
+     "snapshot_id"
+    ]
+   }
+  ],
+  "text": "mutation DeletePlanSnapshot($snapshot_id: Int!) {\n      deletePlanSnapshot: delete_plan_snapshot_by_pk(snapshot_id: $snapshot_id) {\n        snapshot_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PLAN_TAG",
+  "kind": "mutation",
+  "name": "DeletePlanTag",
+  "vars": [
+   {
+    "name": "tag_id",
+    "type": "Int!"
+   },
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_plan_tags_by_pk",
+    "args": [
+     "tag_id",
+     "plan_id"
+    ]
+   }
+  ],
+  "text": "mutation DeletePlanTag($tag_id: Int!, $plan_id: Int!) {\n        delete_plan_tags_by_pk( tag_id: $tag_id, plan_id: $plan_id) {\n          tag_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_PRESET_TO_DIRECTIVE",
+  "kind": "mutation",
+  "name": "DeletePresetToDirective",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_directive_id",
+    "type": "Int!"
+   },
+   {
+    "name": "preset_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_preset_to_directive_by_pk",
+    "args": [
+     "preset_id",
+     "activity_id",
+     "plan_id"
+    ]
+   }
+  ],
+  "text": "mutation DeletePresetToDirective($plan_id: Int!, $activity_directive_id: Int!, $preset_id: Int!) {\n      delete_preset_to_directive_by_pk(preset_id: $preset_id, activity_id: $activity_directive_id, plan_id: $plan_id) {\n        preset_id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_CONDITION_METADATA",
+  "kind": "mutation",
+  "name": "DeleteSchedulingCondition",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSchedulingConditionMetadata",
+    "field": "delete_scheduling_condition_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingCondition($id: Int!) {\n      deleteSchedulingConditionMetadata: delete_scheduling_condition_metadata_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_CONDITION_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "DeleteSchedulingConditionModelSpecification",
+  "vars": [
+   {
+    "name": "conditionIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_scheduling_model_specification_conditions",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingConditionModelSpecification($conditionIds: [Int!]!, $modelId: Int!) {\n      delete_scheduling_model_specification_conditions(\n        where: {\n          condition_id: { _in: $conditionIds },\n          _and: {\n            model_id: { _eq: $modelId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_CONDITION_PLAN_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "DeleteSchedulingConditionPlanSpecification",
+  "vars": [
+   {
+    "name": "conditionIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_scheduling_specification_conditions",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingConditionPlanSpecification($conditionIds: [Int!]!, $planId: Int!) {\n      delete_scheduling_specification_conditions(\n        where: {\n          condition_id: { _in: $conditionIds },\n          _and: {\n            plan_id: { _eq: $planId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_GOAL_INVOCATIONS",
+  "kind": "mutation",
+  "name": "DeleteSchedulingGoalInvocations",
+  "vars": [
+   {
+    "name": "goalInvocationIdsToDelete",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "specificationId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSchedulingGoalPlanSpecifications",
+    "field": "delete_scheduling_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingGoalInvocations($goalInvocationIdsToDelete: [Int!]! = [], $specificationId: Int!) {\n      deleteSchedulingGoalPlanSpecifications: delete_scheduling_specification_goals(\n        where: {\n          goal_invocation_id: { _in: $goalInvocationIdsToDelete },\n          _and: {\n            specification_id: { _eq: $specificationId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_GOAL_METADATA",
+  "kind": "mutation",
+  "name": "DeleteSchedulingGoal",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSchedulingGoalMetadata",
+    "field": "delete_scheduling_goal_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingGoal($id: Int!) {\n      deleteSchedulingGoalMetadata: delete_scheduling_goal_metadata_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SCHEDULING_GOAL_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "DeleteSchedulingGoalModelSpecification",
+  "vars": [
+   {
+    "name": "goalIds",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_scheduling_model_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSchedulingGoalModelSpecification($goalIds: [Int!]!, $modelId: Int!) {\n      delete_scheduling_model_specification_goals(\n        where: {\n          goal_id: { _in: $goalIds },\n          _and: {\n            model_id: { _eq: $modelId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SEQUENCE_ADAPTATION",
+  "kind": "mutation",
+  "name": "DeleteSequenceAdaptation",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSequenceAdaptation",
+    "field": "delete_sequence_adaptation_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSequenceAdaptation($id: Int!) {\n      deleteSequenceAdaptation: delete_sequence_adaptation_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SEQUENCE_FILTERS",
+  "kind": "mutation",
+  "name": "DeleteSequenceFilters",
+  "vars": [
+   {
+    "name": "sequenceFilterIds",
+    "type": "[Int]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSequenceFilters",
+    "field": "delete_sequence_filter",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSequenceFilters($sequenceFilterIds: [Int]!) {\n      deleteSequenceFilters: delete_sequence_filter(\n        where: {\n          id: { _in: $sequenceFilterIds }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SEQUENCE_TEMPLATE",
+  "kind": "mutation",
+  "name": "DeleteSequenceTemplates",
+  "vars": [
+   {
+    "name": "sequenceTemplateId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSequenceTemplates",
+    "field": "delete_sequence_template_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSequenceTemplates($sequenceTemplateId: Int!) {\n      deleteSequenceTemplates: delete_sequence_template_by_pk(id: $sequenceTemplateId) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_SIMULATION_TEMPLATE",
+  "kind": "mutation",
+  "name": "DeleteSimulationTemplate",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteSimulationTemplate",
+    "field": "delete_simulation_template_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteSimulationTemplate($id: Int!) {\n      deleteSimulationTemplate: delete_simulation_template_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_TAG",
+  "kind": "mutation",
+  "name": "DeleteTags",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_tags_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteTags($id: Int!) {\n      delete_tags_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_USER_SEQUENCE",
+  "kind": "mutation",
+  "name": "DeleteUserSequence",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteUserSequence",
+    "field": "delete_user_sequence_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteUserSequence($id: Int!) {\n      deleteUserSequence: delete_user_sequence_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_VIEW",
+  "kind": "mutation",
+  "name": "DeleteView",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deletedView",
+    "field": "delete_view_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteView($id: Int!) {\n      deletedView: delete_view_by_pk(id: $id) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "DELETE_VIEWS",
+  "kind": "mutation",
+  "name": "DeleteViews",
+  "vars": [
+   {
+    "name": "ids",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "delete_view",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation DeleteViews($ids: [Int!]!) {\n      delete_view(where: { id: { _in: $ids } }) {\n        returning {\n          id\n        }\n      }\n    }"
+ },
+ {
+  "key": "DELETE_WORKSPACE_COLLABORATOR",
+  "kind": "mutation",
+  "name": "DeleteWorkspaceCollaborator",
+  "vars": [
+   {
+    "name": "collaborator",
+    "type": "String!"
+   },
+   {
+    "name": "workspaceId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "deleteWorkspaceCollaborator",
+    "field": "delete_workspace_collaborators_by_pk",
+    "args": [
+     "collaborator",
+     "workspace_id"
+    ]
+   }
+  ],
+  "text": "mutation DeleteWorkspaceCollaborator($collaborator: String!, $workspaceId: Int!) {\n      deleteWorkspaceCollaborator: delete_workspace_collaborators_by_pk(collaborator: $collaborator, workspace_id: $workspaceId) {\n        collaborator\n      }\n    }"
+ },
+ {
+  "key": "DUPLICATE_PLAN",
+  "kind": "mutation",
+  "name": "DuplicatePlan",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "new_plan_name",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "duplicate_plan",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation DuplicatePlan($plan_id: Int!, $new_plan_name: String!) {\n      duplicate_plan(args: { new_plan_name: $new_plan_name, plan_id: $plan_id }) {\n        new_plan_id\n      }\n    }"
+ },
+ {
+  "key": "EXPAND_TEMPLATES",
+  "kind": "mutation",
+  "name": "ExpandTemplates",
+  "vars": [
+   {
+    "name": "seqIds",
+    "type": "[String!]!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   },
+   {
+    "name": "simulationDatasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "expandTemplates",
+    "field": "expandAllTemplates",
+    "args": [
+     "seqIds",
+     "simulationDatasetId",
+     "modelId"
+    ]
+   }
+  ],
+  "text": "mutation ExpandTemplates(\n      $seqIds: [String!]!,\n      $modelId: Int!,\n      $simulationDatasetId: Int!\n    ) {\n      expandTemplates: expandAllTemplates(\n        seqIds: $seqIds,\n        simulationDatasetId: $simulationDatasetId,\n        modelId: $modelId,\n      ) {\n        success\n      }\n    }"
+ },
+ {
+  "key": "GET_ACTIVITY_DIRECTIVE_CHANGELOG",
+  "kind": "query",
+  "name": "GetActivityDirectiveChangelog",
+  "vars": [
+   {
+    "name": "activityId",
+    "type": "Int!"
+   },
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "activityDirectiveRevisions",
+    "field": "activity_directive_changelog",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "query GetActivityDirectiveChangelog($activityId: Int!, $planId: Int!) {\n      activityDirectiveRevisions: activity_directive_changelog(\n        where: { plan_id: { _eq: $planId }, _and: { activity_directive_id: { _eq: $activityId }}},\n        order_by: { revision: desc }\n      ) {\n        revision\n        changed_by\n        changed_at\n        anchor_id\n        anchored_to_start\n        arguments\n        metadata\n        name\n        start_offset\n      }\n    }"
+ },
+ {
+  "key": "GET_CONSTRAINT_PROCEDURE_EFFECTIVE_ARGUMENTS_BULK",
+  "kind": "query",
+  "name": "GetConstraintProcedureEffectiveArgumentsBulk",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "[ProcedureEffectiveArgumentsInput!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintProcedureEffectiveArgumentsBulk",
+    "field": "getConstraintProcedureEffectiveArgumentsBulk",
+    "args": [
+     "arguments"
+    ]
+   }
+  ],
+  "text": "query GetConstraintProcedureEffectiveArgumentsBulk($arguments: [ProcedureEffectiveArgumentsInput!]!) {\n      constraintProcedureEffectiveArgumentsBulk: getConstraintProcedureEffectiveArgumentsBulk(\n        arguments: $arguments\n      ) {\n        arguments\n        errors\n        id\n        revision\n      }\n    }"
+ },
+ {
+  "key": "GET_EFFECTIVE_ACTIVITY_ARGUMENTS_BULK",
+  "kind": "query",
+  "name": "GetEffectiveActivityArgumentsBulk",
+  "vars": [
+   {
+    "name": "modelId",
+    "type": "Int!"
+   },
+   {
+    "name": "activities",
+    "type": "[EffectiveArgumentsInput!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "effectiveActivityArgumentsBulk",
+    "field": "getActivityEffectiveArgumentsBulk",
+    "args": [
+     "missionModelId",
+     "activities"
+    ]
+   }
+  ],
+  "text": "query GetEffectiveActivityArgumentsBulk($modelId: Int!, $activities: [EffectiveArgumentsInput!]!) {\n      effectiveActivityArgumentsBulk: getActivityEffectiveArgumentsBulk(\n        missionModelId: $modelId,\n        activities: $activities,\n      ) {\n        arguments\n        typeName\n      }\n    }"
+ },
+ {
+  "key": "GET_EFFECTIVE_MODEL_ARGUMENTS",
+  "kind": "query",
+  "name": "GetEffectiveModelArguments",
+  "vars": [
+   {
+    "name": "modelId",
+    "type": "Int!"
+   },
+   {
+    "name": "arguments",
+    "type": "ModelArguments!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "effectiveModelArguments",
+    "field": "getModelEffectiveArguments",
+    "args": [
+     "missionModelId",
+     "modelArguments"
+    ]
+   }
+  ],
+  "text": "query GetEffectiveModelArguments($modelId: Int!, $arguments: ModelArguments!) {\n      effectiveModelArguments: getModelEffectiveArguments(\n        missionModelId: $modelId,\n        modelArguments: $arguments\n      ) {\n        arguments\n        errors\n        success\n      }\n    }"
+ },
+ {
+  "key": "GET_EVENTS",
+  "kind": "query",
+  "name": "GetEvents",
+  "vars": [
+   {
+    "name": "datasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "topic",
+    "args": [
+     "where"
+    ]
+   },
+   {
+    "field": "event",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetEvents($datasetId: Int!) {\n      topic(where: { dataset_id: { _eq: $datasetId }}) {\n        name\n        value_schema\n        topic_index\n      }\n      event(where: { dataset_id: { _eq: $datasetId }}) {\n        causal_time\n        span_id\n        real_time\n        topic_index\n        transaction_index\n        value\n      }\n    }"
+ },
+ {
+  "key": "GET_EXPANSION_SEQUENCE_ID",
+  "kind": "query",
+  "name": "GetExpansionSequenceId",
+  "vars": [
+   {
+    "name": "simulation_dataset_id",
+    "type": "Int!"
+   },
+   {
+    "name": "simulated_activity_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "expansionSequence",
+    "field": "sequence_to_simulated_activity_by_pk",
+    "args": [
+     "simulation_dataset_id",
+     "simulated_activity_id"
+    ]
+   }
+  ],
+  "text": "query GetExpansionSequenceId($simulation_dataset_id: Int!, $simulated_activity_id: Int!) {\n      expansionSequence: sequence_to_simulated_activity_by_pk(\n        simulation_dataset_id: $simulation_dataset_id,\n        simulated_activity_id: $simulated_activity_id\n      ) {\n        seq_id\n      }\n    }"
+ },
+ {
+  "key": "GET_EXTERNAL_EVENTS",
+  "kind": "query",
+  "name": "GetExternalEvents",
+  "vars": [
+   {
+    "name": "sourceKey",
+    "type": "String!"
+   },
+   {
+    "name": "derivationGroupName",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "external_event",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetExternalEvents(\n      $sourceKey: String!,\n      $derivationGroupName: String!\n    ) {\n      external_event(\n        where: {\n          source_key: {_eq: $sourceKey},\n          derivation_group_name: {_eq: $derivationGroupName}\n        }\n      ) {\n        attributes\n        event_type_name\n        key\n        duration\n        start_time\n        source_key\n      }\n    }"
+ },
+ {
+  "key": "GET_EXTERNAL_EVENT_TYPE_BY_SOURCE",
+  "kind": "query",
+  "name": "GetExternalEventTypesBySource",
+  "vars": [
+   {
+    "name": "derivationGroupName",
+    "type": "String!"
+   },
+   {
+    "name": "sourceKey",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "external_source",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetExternalEventTypesBySource($derivationGroupName: String!, $sourceKey: String!) {\n      external_source (\n        where: {\n          key: {_eq: $sourceKey},\n          derivation_group_name: {_eq: $derivationGroupName}\n        }\n      ) {\n        external_events {\n          external_event_type {\n            name\n            attribute_schema\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_EXTERNAL_PROFILE_SEGMENTS_SINCE",
+  "kind": "query",
+  "name": "GetExternalProfileSegmentsSince",
+  "vars": [
+   {
+    "name": "datasetId",
+    "type": "Int!"
+   },
+   {
+    "name": "profileId",
+    "type": "Int!"
+   },
+   {
+    "name": "sinceOffset",
+    "type": "interval!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "profile",
+    "args": [
+     "where",
+     "limit"
+    ]
+   }
+  ],
+  "text": "query GetExternalProfileSegmentsSince($datasetId: Int!, $profileId: Int!, $sinceOffset: interval!) {\n      profile(where: { _and: { dataset_id: { _eq: $datasetId }, id: { _eq: $profileId } } }, limit: 1) {\n        profile_segments(\n          where: { _and: { dataset_id: { _eq: $datasetId }, start_offset: { _gt: $sinceOffset } } }\n          order_by: { start_offset: asc }\n        ) {\n          dataset_id\n          dynamics\n          is_gap\n          profile_id\n          start_offset\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_EXTERNAL_SOURCE_EXTERNAL_EVENT_COUNT",
+  "kind": "query",
+  "name": "GetExternalSourceExternalEventCount",
+  "vars": [
+   {
+    "name": "externalSourceKey",
+    "type": "String!"
+   },
+   {
+    "name": "derivationGroupName",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "external_source_by_pk",
+    "args": [
+     "derivation_group_name",
+     "key"
+    ]
+   }
+  ],
+  "text": "query GetExternalSourceExternalEventCount($externalSourceKey: String!, $derivationGroupName: String!) {\n      external_source_by_pk(derivation_group_name: $derivationGroupName, key: $externalSourceKey) {\n        external_events_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_MODELS",
+  "kind": "query",
+  "name": "GetModels",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "mission_model",
+    "args": []
+   }
+  ],
+  "text": "query GetModels {\n      models: mission_model {\n        created_at\n        description\n        id\n        is_executable\n        definition_file_id\n        name\n        plans {\n          id\n        }\n        owner\n        version\n      }\n    }"
+ },
+ {
+  "key": "GET_PARCEL",
+  "kind": "query",
+  "name": "GetParcel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "parcel",
+    "field": "parcel_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "query GetParcel($id: Int!) {\n      parcel: parcel_by_pk(id: $id) {\n        channel_dictionary_id\n        command_dictionary_id\n        created_at\n        id\n        name\n        owner\n        sequence_adaptation_id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "GET_PARSED_CHANNEL_DICTIONARY",
+  "kind": "query",
+  "name": "GetParsedChannelDictionary",
+  "vars": [
+   {
+    "name": "channelDictionaryId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "channel_dictionary",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetParsedChannelDictionary($channelDictionaryId: Int!) {\n      channel_dictionary(where: { id: { _eq: $channelDictionaryId } }) {\n        parsed_json\n      }\n    }"
+ },
+ {
+  "key": "GET_PARSED_COMMAND_DICTIONARY",
+  "kind": "query",
+  "name": "GetParsedCommandDictionary",
+  "vars": [
+   {
+    "name": "commandDictionaryId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "command_dictionary",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetParsedCommandDictionary($commandDictionaryId: Int!) {\n      command_dictionary(where: { id: { _eq: $commandDictionaryId } }) {\n        parsed_json\n      }\n    }"
+ },
+ {
+  "key": "GET_PARSED_PARAMETER_DICTIONARY",
+  "kind": "query",
+  "name": "GetParsedParameterDictionary",
+  "vars": [
+   {
+    "name": "parameterDictionaryId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "parameter_dictionary",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetParsedParameterDictionary($parameterDictionaryId: Int!) {\n      parameter_dictionary(where: { id: { _eq: $parameterDictionaryId } }) {\n        parsed_json\n      }\n    }"
+ },
+ {
+  "key": "GET_PERMISSIBLE_QUERIES",
+  "kind": "query",
+  "name": "GetPermissibleQueries",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "queries",
+    "field": "__schema",
+    "args": []
+   }
+  ],
+  "text": "query GetPermissibleQueries {\n      queries: __schema {\n        queryType {\n          fields {\n            name\n          }\n        }\n        mutationType {\n          fields {\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_PLAN",
+  "kind": "query",
+  "name": "GetPlan",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan",
+    "field": "plan_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "query GetPlan($id: Int!) {\n      plan: plan_by_pk(id: $id) {\n        child_plans {\n          id\n          name\n        }\n        collaborators {\n          collaborator\n        }\n        created_at\n        duration\n        id\n        is_locked\n        is_read_only\n        model: mission_model {\n          definition_file_id\n          id\n          is_executable\n          name\n          owner\n          parameters {\n            parameters\n          }\n          refresh_activity_type_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          refresh_resource_type_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          refresh_model_parameter_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          version\n          view {\n            created_at\n            definition\n            id\n            name\n            owner\n            updated_at\n          }\n        }\n        model_id\n        name\n        owner\n        parent_plan {\n          id\n          model_id\n          model: mission_model {\n            id\n            name\n            owner\n            version\n          }\n          name\n          owner\n          collaborators {\n            collaborator\n          }\n          is_locked\n          start_time\n          duration\n        }\n        revision\n        scheduling_specification {\n          id\n        }\n        simulations(order_by: { id: desc }, limit: 1) {\n          id\n          simulation_datasets(order_by: { id: desc }) {\n            id\n            plan_revision\n          }\n        }\n        start_time\n        updated_at\n        updated_by\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_PLANS_AND_MODELS",
+  "kind": "query",
+  "name": "GetPlansAndModels",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "mission_model",
+    "args": [
+     "order_by"
+    ]
+   },
+   {
+    "alias": "plans",
+    "field": "plan",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "query GetPlansAndModels {\n      models: mission_model(order_by: { id: desc }) {\n        created_at\n        definition_file_id\n        description\n        id\n        is_executable\n        name\n        owner\n        plans {\n          id\n        }\n        refresh_activity_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_resource_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_model_parameter_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        version\n        view {\n          created_at\n          id\n          name\n          owner\n          updated_at\n        }\n      }\n      plans: plan(order_by: { id: desc }) {\n        collaborators {\n          collaborator\n        }\n        created_at\n        duration\n        id\n        is_read_only\n        model_id\n        name\n        owner\n        revision\n        start_time\n        updated_at\n        updated_by\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_PLAN_EVENT_TYPES",
+  "kind": "query",
+  "name": "GetPlanEventTypes",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "plan_derivation_group",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetPlanEventTypes($plan_id: Int!) {\n      plan_derivation_group(where: {plan_id: {_eq: $plan_id}}) {\n        external_events (distinct_on: event_type_name) {\n          external_event_type {\n            name\n            attribute_schema\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_PLAN_MERGE_NON_CONFLICTING_ACTIVITIES",
+  "kind": "query",
+  "name": "GetPlanMergeNonConflictingActivities",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "nonConflictingActivities",
+    "field": "get_non_conflicting_activities",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "query GetPlanMergeNonConflictingActivities($merge_request_id: Int!) {\n      nonConflictingActivities: get_non_conflicting_activities(args: { _merge_request_id: $merge_request_id } ) {\n        activity_id,\n        change_type,\n        source,\n        source_tags,\n        target,\n        target_tags\n      }\n    }"
+ },
+ {
+  "key": "GET_PLAN_SNAPSHOT_ACTIVITY_DIRECTIVES",
+  "kind": "query",
+  "name": "GetPlanSnapshotActivityDirectives",
+  "vars": [
+   {
+    "name": "planSnapshotId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan_snapshot_activity_directives",
+    "field": "plan_snapshot_activities",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "query GetPlanSnapshotActivityDirectives($planSnapshotId: Int!) {\n      plan_snapshot_activity_directives: plan_snapshot_activities(where: { snapshot_id: { _eq: $planSnapshotId } }, order_by: { start_offset: asc }) {\n        anchor_id\n        anchored_to_start\n        arguments\n        created_at\n        id\n        last_modified_arguments_at\n        last_modified_at\n        metadata\n        name\n        source_scheduling_goal_id\n        source_scheduling_goal_invocation_id\n        start_offset\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        type\n      }\n    }"
+ },
+ {
+  "key": "GET_PROFILE_SINCE",
+  "kind": "query",
+  "name": "GetProfileSince",
+  "vars": [
+   {
+    "name": "datasetId",
+    "type": "Int!"
+   },
+   {
+    "name": "name",
+    "type": "String!"
+   },
+   {
+    "name": "sinceOffset",
+    "type": "interval!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "profile",
+    "args": [
+     "where",
+     "limit"
+    ]
+   }
+  ],
+  "text": "query GetProfileSince($datasetId: Int!, $name: String!, $sinceOffset: interval!) {\n      profile(where: { _and: { dataset_id: { _eq: $datasetId }, name: { _eq: $name } } }, limit: 1) {\n        dataset_id\n        duration\n        id\n        name\n        profile_segments(\n          where: { _and: { dataset_id: { _eq: $datasetId }, start_offset: { _gt: $sinceOffset } } }\n          order_by: { start_offset: asc }\n        ) {\n          dataset_id\n          dynamics\n          is_gap\n          profile_id\n          start_offset\n        }\n        type\n      }\n    }"
+ },
+ {
+  "key": "GET_RESOURCE_TYPES",
+  "kind": "query",
+  "name": "GetResourceTypes",
+  "vars": [
+   {
+    "name": "model_id",
+    "type": "Int!"
+   },
+   {
+    "name": "limit",
+    "type": "Int"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "resource_types",
+    "field": "resource_type",
+    "args": [
+     "where",
+     "order_by",
+     "limit"
+    ]
+   }
+  ],
+  "text": "query GetResourceTypes($model_id: Int!, $limit: Int) {\n      resource_types: resource_type(where: { model_id: { _eq: $model_id } }, order_by: { name: asc }, limit: $limit) {\n        name\n        schema\n      }\n    }"
+ },
+ {
+  "key": "GET_ROLE_PERMISSIONS",
+  "kind": "query",
+  "name": "GetRolePermissions",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "rolePermissions",
+    "field": "user_role_permission",
+    "args": []
+   }
+  ],
+  "text": "query GetRolePermissions {\n      rolePermissions: user_role_permission {\n        role\n        action_permissions\n        function_permissions\n        workspace_permissions\n      }\n    }"
+ },
+ {
+  "key": "GET_SCHEDULING_PROCEDURE_EFFECTIVE_ARGUMENTS_BULK",
+  "kind": "query",
+  "name": "GetSchedulingProcedureEffectiveArgumentsBulk",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "[ProcedureEffectiveArgumentsInput!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "schedulingProcedureEffectiveArgumentsBulk",
+    "field": "getSchedulingProcedureEffectiveArgumentsBulk",
+    "args": [
+     "arguments"
+    ]
+   }
+  ],
+  "text": "query GetSchedulingProcedureEffectiveArgumentsBulk($arguments: [ProcedureEffectiveArgumentsInput!]!) {\n      schedulingProcedureEffectiveArgumentsBulk: getSchedulingProcedureEffectiveArgumentsBulk(\n        arguments: $arguments\n      ) {\n        arguments\n        errors\n        id\n        revision\n      }\n    }"
+ },
+ {
+  "key": "GET_SCHEDULING_SPEC_CONDITIONS_FOR_CONDITION",
+  "kind": "query",
+  "name": "GetSchedulingSpecConditionsForCondition",
+  "vars": [
+   {
+    "name": "condition_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "scheduling_specification_conditions",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetSchedulingSpecConditionsForCondition($condition_id: Int!) {\n      scheduling_specification_conditions(where: { condition_id: { _eq: $condition_id } }) {\n        enabled\n        condition_id\n        specification_id\n      }\n    }"
+ },
+ {
+  "key": "GET_SCHEDULING_SPEC_GOALS_FOR_GOAL",
+  "kind": "query",
+  "name": "GetSchedulingSpecGoalsForGoal",
+  "vars": [
+   {
+    "name": "goal_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "scheduling_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetSchedulingSpecGoalsForGoal($goal_id: Int!) {\n      scheduling_specification_goals(where: { goal_id: { _eq: $goal_id } }) {\n        enabled\n        goal_id\n        priority\n        arguments\n        specification_id\n      }\n    }"
+ },
+ {
+  "key": "GET_SEQUENCE_ADAPTATION",
+  "kind": "query",
+  "name": "GetSequenceAdaptation",
+  "vars": [
+   {
+    "name": "sequence_adaptation_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "sequence_adaptation",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetSequenceAdaptation($sequence_adaptation_id: Int!) {\n      sequence_adaptation(where: { id: { _eq: $sequence_adaptation_id }}) {\n        adaptation\n        name\n      }\n    }"
+ },
+ {
+  "key": "GET_SIMULATION_DATASET_ID",
+  "kind": "query",
+  "name": "GetSimulationDatasetId",
+  "vars": [
+   {
+    "name": "datasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulation_dataset",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetSimulationDatasetId($datasetId: Int!) {\n      simulation_dataset(where: {dataset_id: {_eq: $datasetId}}) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "GET_SPANS",
+  "kind": "query",
+  "name": "GetSpans",
+  "vars": [
+   {
+    "name": "datasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "span",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "query GetSpans($datasetId: Int!) {\n      span(where: { dataset_id: { _eq: $datasetId } }, order_by: { start_offset: asc }) {\n        attributes\n        dataset_id\n        duration\n        span_id\n        parent_id\n        start_offset\n        type\n      }\n    }"
+ },
+ {
+  "key": "GET_TYPESCRIPT_CONSTRAINTS",
+  "kind": "query",
+  "name": "GetTypeScriptConstraints",
+  "vars": [
+   {
+    "name": "model_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "dslTypeScriptResponse",
+    "field": "constraintsDslTypescript",
+    "args": [
+     "missionModelId"
+    ]
+   }
+  ],
+  "text": "query GetTypeScriptConstraints($model_id: Int!) {\n      dslTypeScriptResponse: constraintsDslTypescript(missionModelId: $model_id) {\n        reason\n        status\n        typescriptFiles {\n          content\n          filePath\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_TYPESCRIPT_SCHEDULING",
+  "kind": "query",
+  "name": "GetTypeScriptScheduling",
+  "vars": [
+   {
+    "name": "model_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "dslTypeScriptResponse",
+    "field": "schedulingDslTypescript",
+    "args": [
+     "missionModelId"
+    ]
+   }
+  ],
+  "text": "query GetTypeScriptScheduling($model_id: Int!) {\n      dslTypeScriptResponse: schedulingDslTypescript(missionModelId: $model_id) {\n        reason\n        status\n        typescriptFiles {\n          content\n          filePath\n        }\n      }\n    }"
+ },
+ {
+  "key": "GET_UPLOADED_FILENAME",
+  "kind": "query",
+  "name": "GetUploadedFileName",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "uploaded_file",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query GetUploadedFileName($id: Int!) {\n      uploaded_file(where: { id: { _eq: $id }}) {\n        name\n      }\n    }"
+ },
+ {
+  "key": "GET_USER_SEQUENCE",
+  "kind": "query",
+  "name": "GetUserSequence",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "userSequence",
+    "field": "user_sequence_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "query GetUserSequence($id: Int!) {\n      userSequence: user_sequence_by_pk(id: $id) {\n        created_at\n        definition\n        id\n        is_locked\n        name\n        owner\n        parcel_id\n        seq_json\n        updated_at\n        workspace_id\n      }\n    }"
+ },
+ {
+  "key": "GET_USER_SEQUENCE_FROM_SEQ_JSON",
+  "kind": "query",
+  "name": "GetUserSequenceFromSeqJson",
+  "vars": [
+   {
+    "name": "seqJson",
+    "type": "SequenceSeqJson!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "sequence",
+    "field": "getEdslForSeqJson",
+    "args": [
+     "seqJson"
+    ]
+   }
+  ],
+  "text": "query GetUserSequenceFromSeqJson($seqJson: SequenceSeqJson!) {\n      sequence: getEdslForSeqJson(seqJson: $seqJson)\n    }"
+ },
+ {
+  "key": "GET_USER_SEQUENCE_SEQ_JSON",
+  "kind": "query",
+  "name": "GetUserSequenceSeqJson",
+  "vars": [
+   {
+    "name": "commandDictionaryId",
+    "type": "Int!"
+   },
+   {
+    "name": "sequenceDefinition",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "getUserSequenceSeqJson",
+    "args": [
+     "commandDictionaryID",
+     "edslBody"
+    ]
+   }
+  ],
+  "text": "query GetUserSequenceSeqJson($commandDictionaryId: Int!, $sequenceDefinition: String!) {\n      getUserSequenceSeqJson(commandDictionaryID: $commandDictionaryId, edslBody: $sequenceDefinition) {\n        errors {\n          location {\n            column\n            line\n          }\n          message\n          stack\n        }\n        seqJson\n        status\n      }\n    }"
+ },
+ {
+  "key": "GET_VIEW",
+  "kind": "query",
+  "name": "GetView",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "view",
+    "field": "view_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "query GetView($id: Int!) {\n      view: view_by_pk(id: $id) {\n        created_at\n        definition\n        id\n        name\n        owner\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "INITIAL_SIMULATION_UPDATE",
+  "kind": "mutation",
+  "name": "InitialSimulationUpdate",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "simulation",
+    "type": "simulation_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_simulation",
+    "args": [
+     "where",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation InitialSimulationUpdate($plan_id: Int!, $simulation: simulation_set_input!) {\n      update_simulation(where: {plan_id: {_eq: $plan_id}}, _set: $simulation) {\n        returning {\n          id\n        }\n      }\n    }"
+ },
+ {
+  "key": "INSERT_EXPANSION_SEQUENCE_TO_ACTIVITY",
+  "kind": "mutation",
+  "name": "InsertSequenceToActivity",
+  "vars": [
+   {
+    "name": "input",
+    "type": "sequence_to_simulated_activity_insert_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "sequence",
+    "field": "insert_sequence_to_simulated_activity_one",
+    "args": [
+     "object",
+     "on_conflict"
+    ]
+   }
+  ],
+  "text": "mutation InsertSequenceToActivity($input: sequence_to_simulated_activity_insert_input!) {\n      sequence: insert_sequence_to_simulated_activity_one(\n        object: $input,\n        on_conflict: {\n          constraint: sequence_to_simulated_activity_primary_key,\n          update_columns: [seq_id]\n        }\n      ) {\n        seq_id\n      }\n    }"
+ },
+ {
+  "key": "MIGRATE_PLAN_TO_MODEL",
+  "kind": "mutation",
+  "name": "MigratePlanToModel",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "new_model_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "migrate_plan_to_model",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation MigratePlanToModel($plan_id: Int!, $new_model_id: Int!) {\n      migrate_plan_to_model(args: { _plan_id: $plan_id, _new_model_id: $new_model_id } ) {\n        result\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_BEGIN",
+  "kind": "mutation",
+  "name": "PlanMergeBegin",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "begin_merge",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeBegin($merge_request_id: Int!) {\n      begin_merge(args: { _merge_request_id: $merge_request_id } ) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_CANCEL",
+  "kind": "mutation",
+  "name": "PlanMergeCancel",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "cancel_merge",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeCancel($merge_request_id: Int!) {\n      cancel_merge(args: { _merge_request_id: $merge_request_id } ) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_COMMIT",
+  "kind": "mutation",
+  "name": "PlanMergeCommit",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int"
+   }
+  ],
+  "roots": [
+   {
+    "field": "commit_merge",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeCommit($merge_request_id: Int) {\n      commit_merge(args: { _merge_request_id: $merge_request_id } ) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_DENY",
+  "kind": "mutation",
+  "name": "PlanMergeDeny",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int"
+   }
+  ],
+  "roots": [
+   {
+    "field": "deny_merge",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeDeny($merge_request_id: Int) {\n      deny_merge(args: { merge_request_id: $merge_request_id } ) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_REQUEST_WITHDRAW",
+  "kind": "mutation",
+  "name": "PlanMergeRequestWithdraw",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "withdraw_merge_request",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeRequestWithdraw($merge_request_id: Int!) {\n      withdraw_merge_request(args: { _merge_request_id: $merge_request_id } ) {\n        merge_request_id\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_RESOLVE_ALL_CONFLICTS",
+  "kind": "mutation",
+  "name": "PlanMergeResolveAllConflicts",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   },
+   {
+    "name": "resolution",
+    "type": "resolution_type!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "set_resolution_bulk",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeResolveAllConflicts($merge_request_id: Int!, $resolution: resolution_type!) {\n      set_resolution_bulk (\n        args: { _merge_request_id: $merge_request_id, _resolution: $resolution }\n      ) {\n        activity_id\n        change_type_source\n        change_type_target\n        resolution\n        merge_base\n        source\n        target\n      }\n    }"
+ },
+ {
+  "key": "PLAN_MERGE_RESOLVE_CONFLICT",
+  "kind": "mutation",
+  "name": "PlanMergeResolveConflict",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activity_id",
+    "type": "Int!"
+   },
+   {
+    "name": "resolution",
+    "type": "resolution_type!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "set_resolution",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation PlanMergeResolveConflict($merge_request_id: Int!, $activity_id: Int!, $resolution: resolution_type!) {\n      set_resolution(\n        args: { _merge_request_id: $merge_request_id, _activity_id: $activity_id, _resolution: $resolution }\n      ) {\n        activity_id\n        change_type_source\n        change_type_target\n        resolution\n        merge_base\n        source\n        target\n      }\n    }"
+ },
+ {
+  "key": "RESTORE_ACTIVITY_FROM_CHANGELOG",
+  "kind": "mutation",
+  "name": "RestoreActivityFromChangelog",
+  "vars": [
+   {
+    "name": "activity_id",
+    "type": "Int!"
+   },
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "restoreActivityFromChangelog",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation RestoreActivityFromChangelog($activity_id: Int!, $plan_id: Int!, $revision: Int!) {\n      restoreActivityFromChangelog(args: { _plan_id: $plan_id, _activity_directive_id: $activity_id, _revision: $revision }) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "RESTORE_PLAN_SNAPSHOT",
+  "kind": "mutation",
+  "name": "RestorePlanSnapshot",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "snapshot_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "restore_from_snapshot",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "mutation RestorePlanSnapshot($plan_id: Int!, $snapshot_id: Int!) {\n      restore_from_snapshot(args: { _plan_id: $plan_id, _snapshot_id: $snapshot_id }) {\n        snapshot_id\n      }\n    }"
+ },
+ {
+  "key": "SCHEDULE",
+  "kind": "query",
+  "name": "Schedule",
+  "vars": [
+   {
+    "name": "specificationId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "schedule",
+    "args": [
+     "specificationId"
+    ]
+   }
+  ],
+  "text": "query Schedule($specificationId: Int!) {\n      schedule(specificationId: $specificationId) {\n        reason\n        analysisId\n      }\n    }"
+ },
+ {
+  "key": "SEARCH_ACTIVITIES",
+  "kind": "query",
+  "name": "SearchActivities",
+  "vars": [
+   {
+    "name": "searchFilter",
+    "type": "activity_directive_bool_exp!"
+   },
+   {
+    "name": "limit",
+    "type": "Int!"
+   },
+   {
+    "name": "offset",
+    "type": "Int!"
+   },
+   {
+    "name": "orderBy",
+    "type": "[activity_directive_order_by!]"
+   }
+  ],
+  "roots": [
+   {
+    "field": "activity_directive",
+    "args": [
+     "where",
+     "order_by",
+     "limit",
+     "offset"
+    ]
+   },
+   {
+    "field": "activity_directive_aggregate",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "query SearchActivities(\n      $searchFilter: activity_directive_bool_exp!,\n      $limit: Int!,\n      $offset: Int!,\n      $orderBy: [activity_directive_order_by!]\n    ) {\n      activity_directive(where: $searchFilter, order_by: $orderBy, limit: $limit, offset: $offset) {\n        anchor_id\n        anchored_to_start\n        applied_preset {\n          preset_applied {\n            name\n          }\n        }\n        arguments\n        created_at\n        created_by\n        id\n        last_modified_at\n        last_modified_by\n        metadata\n        name\n        plan_id\n        plan {\n          model: mission_model {\n            id\n            is_executable\n            name\n          }\n          model_id\n          name\n          owner\n          start_time\n          tags {\n            tag {\n              color\n              name\n            }\n          }\n        }\n        source_scheduling_goal {\n          id\n          name\n        }\n        source_scheduling_goal_id\n        start_offset\n        tags {\n          tag {\n            color\n            name\n          }\n        }\n        type\n      }\n      activity_directive_aggregate(where: $searchFilter) {\n        aggregate {\n          count\n        }\n      }\n    }"
+ },
+ {
+  "key": "SIMULATE",
+  "kind": "query",
+  "name": "Simulate",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   },
+   {
+    "name": "force",
+    "type": "Boolean!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulate",
+    "args": [
+     "planId",
+     "force"
+    ]
+   }
+  ],
+  "text": "query Simulate($planId: Int!, $force: Boolean!) {\n      simulate(planId: $planId, force: $force) {\n        reason\n        simulationDatasetId\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTION_DEFINITIONS",
+  "kind": "subscription",
+  "name": "SubActionDefinitions",
+  "vars": [],
+  "roots": [
+   {
+    "field": "action_definition",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubActionDefinitions {\n      action_definition(order_by: { id: desc }) {\n        archived\n        created_at\n        description\n        id\n        name\n        owner\n        settings\n        updated_at\n        updated_by\n        versions(order_by: { revision: desc }) {\n          action_definition_id\n          action_file_id\n          archived\n          author\n          created_at\n          parameter_schema\n          revision\n          settings_schema\n        }\n        workspace_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTION_RUN",
+  "kind": "subscription",
+  "name": "SubActionRun",
+  "vars": [
+   {
+    "name": "actionRunId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "actionRun",
+    "field": "action_run_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubActionRun($actionRunId: Int!) {\n      actionRun: action_run_by_pk(id: $actionRunId) {\n        action_definition_id\n        action_definition {\n          archived\n          created_at\n          description\n          id\n          name\n          owner\n          settings\n          updated_at\n          updated_by\n          versions(order_by: { revision: desc }) {\n            action_definition_id\n            action_file_id\n            archived\n            author\n            created_at\n            parameter_schema\n            revision\n            settings_schema\n          }\n          workspace_id\n        }\n        action_definition_revision\n        canceled\n        duration\n        error\n        id\n        logs\n        parameters\n        requested_at\n        requested_by\n        results\n        settings\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTION_RUNS",
+  "kind": "subscription",
+  "name": "SubActionRuns",
+  "vars": [],
+  "roots": [
+   {
+    "field": "action_run",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubActionRuns {\n      action_run(order_by: { id: desc }) {\n        action_definition_id\n        action_definition {\n          workspace_id\n        }\n        action_definition_revision\n        canceled\n        duration\n        error\n        id\n        logs\n        parameters\n        requested_at\n        requested_by\n        results\n        settings\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_DIRECTIVES",
+  "kind": "subscription",
+  "name": "SubActivityDirectives",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "activity_directives",
+    "field": "activity_directive",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubActivityDirectives($planId: Int!) {\n      activity_directives: activity_directive(where: { plan_id: { _eq: $planId } }, order_by: { start_offset: asc }) {\n        anchor_id\n        anchor_validations {\n          activity_id\n          plan_id\n          reason_invalid\n        }\n        anchored_to_start\n        applied_preset {\n          preset_id\n          preset_applied {\n            arguments\n            associated_activity_type\n            id\n            name\n            owner\n          }\n        }\n        arguments\n        created_at\n        created_by\n        id\n        last_modified_arguments_at\n        last_modified_at\n        last_modified_by\n        metadata\n        name\n        plan_id\n        source_scheduling_goal_id\n        source_scheduling_goal_invocation_id\n        start_offset\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        type\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_DIRECTIVE_METADATA_SCHEMAS",
+  "kind": "subscription",
+  "name": "SubActivityDirectiveMetadataSchemas",
+  "vars": [],
+  "roots": [
+   {
+    "field": "activity_directive_metadata_schema",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubActivityDirectiveMetadataSchemas {\n      activity_directive_metadata_schema(order_by: { key: asc }) {\n        key\n        schema\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_DIRECTIVE_VALIDATIONS",
+  "kind": "subscription",
+  "name": "SubActivityDirectiveValidationErrors",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "activity_directive_validations",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubActivityDirectiveValidationErrors($planId: Int!) {\n      activity_directive_validations(where: {\n        plan_id: {_eq: $planId}\n      }) {\n        directive_id\n        plan_id\n        status\n        validations\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_PRESETS",
+  "kind": "subscription",
+  "name": "SubActivityPresets",
+  "vars": [
+   {
+    "name": "modelId",
+    "type": "Int!"
+   },
+   {
+    "name": "activityTypeName",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "activity_presets",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubActivityPresets($modelId: Int!, $activityTypeName: String!) {\n      activity_presets(where: {\n        model_id: { _eq: $modelId },\n        associated_activity_type: { _eq: $activityTypeName }\n      }) {\n        id\n        model_id\n        name\n        associated_activity_type\n        arguments\n        owner\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_PRESETS_ALL",
+  "kind": "subscription",
+  "name": "SubActivityPresetsAll",
+  "vars": [],
+  "roots": [
+   {
+    "field": "activity_presets",
+    "args": []
+   }
+  ],
+  "text": "subscription SubActivityPresetsAll {\n      activity_presets {\n        id\n        model_id\n        name\n        associated_activity_type\n        arguments\n        owner\n      }\n    }"
+ },
+ {
+  "key": "SUB_ACTIVITY_TYPES",
+  "kind": "subscription",
+  "name": "SubActivityTypes",
+  "vars": [
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "activity_type",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubActivityTypes($modelId: Int!) {\n      activity_type(where: { model_id: { _eq: $modelId } }, order_by: { name: asc }) {\n        computed_attributes_value_schema\n        name\n        parameters\n        required_parameters\n        subsystem_tag {\n          color\n          id\n          name\n        }\n        description\n      }\n    }"
+ },
+ {
+  "key": "SUB_ANCHOR_VALIDATION_STATUS",
+  "kind": "subscription",
+  "name": "SubAnchorValidationStatus",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "anchor_validation_status",
+    "field": "anchor_validation_status",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubAnchorValidationStatus($planId: Int!) {\n      anchor_validation_status: anchor_validation_status(where: { plan_id: { _eq: $planId } }) {\n        activity_id,\n        plan_id,\n        reason_invalid\n      }\n    }"
+ },
+ {
+  "key": "SUB_CHANNEL_DICTIONARIES",
+  "kind": "subscription",
+  "name": "SubChannelDictionaries",
+  "vars": [],
+  "roots": [
+   {
+    "field": "channel_dictionary",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubChannelDictionaries {\n      channel_dictionary(order_by: { id: desc }) {\n        created_at\n        id\n        mission\n        version\n        created_at\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_COMMAND_DICTIONARIES",
+  "kind": "subscription",
+  "name": "SubCommandDictionaries",
+  "vars": [],
+  "roots": [
+   {
+    "field": "command_dictionary",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubCommandDictionaries {\n      command_dictionary(order_by: { id: desc }) {\n        created_at\n        id\n        mission\n        version\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINT",
+  "kind": "subscription",
+  "name": "SubConstraint",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraint",
+    "field": "constraint_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraint($id: Int!) {\n      constraint: constraint_metadata_by_pk(id: $id) {\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          plan_id\n        }\n        public\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          parameter_schema\n          revision\n          tags {\n            tag {\n              color\n              id\n              name\n            }\n          }\n          type\n          uploaded_jar_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINTS",
+  "kind": "subscription",
+  "name": "SubConstraints",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "constraints",
+    "field": "constraint_metadata",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraints {\n      constraints: constraint_metadata(order_by: { name: asc }) {\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          plan_id\n        }\n        public\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          parameter_schema\n          revision\n          type\n          uploaded_jar_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINT_DEFINITION",
+  "kind": "subscription",
+  "name": "SubConstraintDefinition",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintDefinition",
+    "field": "constraint_definition_by_pk",
+    "args": [
+     "constraint_id",
+     "revision"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraintDefinition($id: Int!, $revision: Int!) {\n      constraintDefinition: constraint_definition_by_pk(constraint_id: $id, revision: $revision) {\n        definition\n        revision\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINT_INVOCATIONS",
+  "kind": "subscription",
+  "name": "SubConstraintInvocations",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "constraint_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraintInvocations($planId: Int!) {\n      constraint_specification (where: {specification: {plan_id: {_eq: $planId}}}) {\n        arguments\n        constraint_id\n        invocation_id\n        constraint_revision\n        enabled\n        specification_id\n        constraint_metadata {\n          name\n          versions(order_by: {revision: desc}) {\n            author\n            revision\n            type\n            parameter_schema\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINT_PLAN_SPECIFICATIONS",
+  "kind": "subscription",
+  "name": "SubConstraintPlanSpecifications",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintPlanSpecs",
+    "field": "constraint_specification",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraintPlanSpecifications($planId: Int!) {\n      constraintPlanSpecs: constraint_specification(\n        where: { plan_id: {_eq: $planId } },\n        order_by: { order: asc }\n      ) {\n        arguments\n        constraint_id\n        invocation_id\n        constraint_revision\n        enabled\n        constraint_metadata {\n          name\n          owner\n          public\n          versions {\n            parameter_schema\n            revision\n            type\n          }\n        }\n        order\n        plan_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_CONSTRAINT_REQUESTS",
+  "kind": "subscription",
+  "name": "SubConstraintRuns",
+  "vars": [
+   {
+    "name": "simulationDatasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "constraintRuns",
+    "field": "constraint_request",
+    "args": [
+     "where",
+     "order_by",
+     "limit"
+    ]
+   }
+  ],
+  "text": "subscription SubConstraintRuns($simulationDatasetId: Int!) {\n      constraintRuns: constraint_request(where: { simulation_dataset_id: { _eq: $simulationDatasetId }}, order_by: { id: desc }, limit: 1) {\n        constraints_run {\n          results {\n            arguments\n            constraint_id\n            constraint_revision\n            errors\n            id\n            results\n          }\n          constraint_invocation_id\n        }\n        requested_by\n        requested_at\n        simulation_dataset_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_DERIVATION_GROUPS",
+  "kind": "subscription",
+  "name": "SubDerivationGroups",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "derivationGroups",
+    "field": "derivation_group",
+    "args": []
+   }
+  ],
+  "text": "subscription SubDerivationGroups {\n      derivationGroups: derivation_group {\n        name\n        owner\n        source_type_name\n        derived_events_aggregate {\n          aggregate {\n            count\n          }\n        }\n        external_sources {\n          key\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_EVENT_TYPES_IN_USE",
+  "kind": "subscription",
+  "name": "EventTypesInUser",
+  "vars": [],
+  "roots": [
+   {
+    "field": "external_source",
+    "args": []
+   }
+  ],
+  "text": "subscription EventTypesInUser {\n    external_source {\n      key\n      external_events {\n        external_event_type {\n          name\n        }\n      }\n    }\n  }"
+ },
+ {
+  "key": "SUB_EXPANDED_TEMPLATES",
+  "kind": "subscription",
+  "name": "SubExpandedTemplates",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "expandedTemplates",
+    "field": "expanded_templates",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubExpandedTemplates {\n      expandedTemplates: expanded_templates(order_by: { id: desc }) {\n        id\n        seq_id\n        simulation_dataset_id\n        expanded_template\n        created_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXPANSION_SEQUENCES",
+  "kind": "subscription",
+  "name": "SubExpansionSequences",
+  "vars": [],
+  "roots": [
+   {
+    "field": "sequence",
+    "args": []
+   }
+  ],
+  "text": "subscription SubExpansionSequences {\n      sequence {\n        created_at\n        metadata\n        seq_id\n        simulation_dataset_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXTENSIONS",
+  "kind": "subscription",
+  "name": "SubExtensions",
+  "vars": [],
+  "roots": [
+   {
+    "field": "extensions",
+    "args": []
+   }
+  ],
+  "text": "subscription SubExtensions {\n      extensions {\n        description\n        extension_roles {\n          extension_id\n          role\n        }\n        id\n        label\n        updated_at\n        url\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXTERNAL_EVENT_TYPES",
+  "kind": "subscription",
+  "name": "SubExternalEventTypes",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "external_event_type",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubExternalEventTypes {\n      models: external_event_type(order_by: { name: asc }) {\n        name\n        attribute_schema\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXTERNAL_SOURCE",
+  "kind": "subscription",
+  "name": "SubExternalSource",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "external_source_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubExternalSource($id: Int!) {\n      models: external_source_by_pk(id: $id) {\n        key\n        source_type_name\n        start_time\n        end_time\n        valid_at\n        created_at\n        owner\n        attributes\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXTERNAL_SOURCES",
+  "kind": "subscription",
+  "name": "SubExternalSources",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "external_source",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubExternalSources {\n      models: external_source(order_by: { key: asc }) {\n        key,\n        source_type_name,\n        derivation_group_name,\n        start_time\n        end_time\n        valid_at\n        created_at\n        owner\n        attributes\n      }\n    }"
+ },
+ {
+  "key": "SUB_EXTERNAL_SOURCE_TYPES",
+  "kind": "subscription",
+  "name": "SubExternalSourceTypes",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "external_source_type",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubExternalSourceTypes {\n      models: external_source_type(order_by: { name: asc }) {\n        name\n        attribute_schema\n      }\n    }"
+ },
+ {
+  "key": "SUB_MODEL",
+  "kind": "subscription",
+  "name": "SubModel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "model",
+    "field": "mission_model_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubModel($id: Int!) {\n      model: mission_model_by_pk(id: $id) {\n        derivation_group_specification {\n          model_id\n          derivation_group_name\n        }\n        constraint_specification(order_by: { order: asc }) {\n          arguments\n          constraint_id\n          invocation_id\n          constraint_revision\n          constraint_definition {\n            definition\n            tags {\n              tag_id\n            }\n          }\n          constraint_metadata {\n            id\n            name\n          }\n          order\n        }\n        created_at\n        default_view_id\n        definition_file_id\n        description\n        is_executable\n        id\n        mission\n        name\n        owner\n        plans {\n          id\n        }\n        refresh_activity_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_resource_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_model_parameter_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        revision\n        scheduling_specification_conditions {\n          condition_id\n          condition_revision\n          condition_definition {\n            definition\n            tags {\n              tag_id\n            }\n          }\n          condition_metadata {\n            id\n            name\n          }\n        }\n        scheduling_specification_goals(order_by: { priority: asc }) {\n          arguments\n          goal_id\n          goal_invocation_id\n          goal_revision\n          goal_definition {\n            definition\n            tags {\n              tag_id\n            }\n          }\n          goal_metadata {\n            id\n            name\n          }\n          priority\n        }\n        version\n      }\n    }"
+ },
+ {
+  "key": "SUB_MODELS",
+  "kind": "subscription",
+  "name": "SubModels",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "models",
+    "field": "mission_model",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubModels {\n      models: mission_model(order_by: { name: asc }) {\n        activity_types {\n          name\n          parameters\n        }\n        created_at\n        definition_file_id\n        description\n        id\n        is_executable\n        name\n        plans {\n          id\n        }\n        owner\n        refresh_activity_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_resource_type_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        refresh_model_parameter_logs(order_by: { created_at: desc }, limit: 1) {\n          created_at\n          error\n          error_message\n          pending\n          success\n        }\n        version\n        view {\n          created_at\n          id\n          name\n          owner\n          updated_at\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PARAMETER_DICTIONARIES",
+  "kind": "subscription",
+  "name": "SubParameterDictionaries",
+  "vars": [],
+  "roots": [
+   {
+    "field": "parameter_dictionary",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubParameterDictionaries {\n      parameter_dictionary(order_by: { id: desc }) {\n        created_at\n        id\n        mission\n        updated_at\n        version\n      }\n    }"
+ },
+ {
+  "key": "SUB_PARCEL",
+  "kind": "subscription",
+  "name": "SubParcel",
+  "vars": [
+   {
+    "name": "parcelId",
+    "type": "number"
+   }
+  ],
+  "roots": [
+   {
+    "field": "parcel_by_pk",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubParcel($parcelId: number) {\n      parcel_by_pk(where: { id: {_eq: $parcelId } }) {\n        channel_dictionary_id\n        command_dictionary_id\n        created_at\n        id\n        name\n        sequence_adaptation_id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_PARCELS",
+  "kind": "subscription",
+  "name": "SubParcels",
+  "vars": [],
+  "roots": [
+   {
+    "field": "parcel",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubParcels {\n      parcel(order_by: { id: desc }) {\n        channel_dictionary_id\n        command_dictionary_id\n        created_at\n        id\n        name\n        sequence_adaptation_id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_PARCEL_TO_PARAMETER_DICTIONARIES",
+  "kind": "subscription",
+  "name": "SubParcelsToParameterDictionaries",
+  "vars": [],
+  "roots": [
+   {
+    "field": "parcel_to_parameter_dictionary",
+    "args": []
+   }
+  ],
+  "text": "subscription SubParcelsToParameterDictionaries {\n      parcel_to_parameter_dictionary {\n        parameter_dictionary_id\n        parcel_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLANS",
+  "kind": "subscription",
+  "name": "SubPlans",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "plans",
+    "field": "plan",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubPlans {\n      plans: plan(order_by: { id: desc }) {\n        collaborators {\n          collaborator\n        }\n        created_at\n        duration\n        id\n        is_read_only\n        model_id\n        name\n        owner\n        revision\n        start_time\n        updated_at\n        updated_by\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLANS_USER_WRITABLE",
+  "kind": "subscription",
+  "name": "SubPlansUserWritable",
+  "vars": [
+   {
+    "name": "userId",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "plan",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubPlansUserWritable($userId: String!) {\n      plan(where: {_or: [{owner: {_eq: $userId}}, {collaborators: {collaborator: {_eq: $userId}}}]}, order_by: {id: desc}) {\n        collaborators {\n          collaborator\n        }\n        id\n        name\n        owner\n        updated_at\n        updated_by\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_DATASET",
+  "kind": "subscription",
+  "name": "SubPlanDatasets",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "plan_dataset",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanDatasets($planId: Int!) {\n      plan_dataset(where: {plan_id: {_eq: $planId}}) {\n        dataset_id\n        offset_from_plan_start\n        simulation_dataset_id\n        dataset {\n          profiles {\n            duration\n            id\n            name\n            type\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_DERIVATION_GROUP",
+  "kind": "subscription",
+  "name": "SubPlanExternalSource",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "links",
+    "field": "plan_derivation_group",
+    "args": [
+     "order_by",
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanExternalSource($plan_id: Int!) {\n      links: plan_derivation_group(order_by: { plan_id: asc }, where: {plan_id: {_eq: $plan_id}}) {\n        derivation_group_name\n        plan_id\n        acknowledged\n        last_acknowledged_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_EXTERNAL_EVENTS_DERIVATION_GROUP",
+  "kind": "subscription",
+  "name": "SubPlanExternalEventsDerivationGroup",
+  "vars": [
+   {
+    "name": "derivation_group_names",
+    "type": "[String!]!"
+   },
+   {
+    "name": "plan_end",
+    "type": "timestamptz!"
+   },
+   {
+    "name": "plan_start",
+    "type": "timestamptz!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "events",
+    "field": "derived_events",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanExternalEventsDerivationGroup(\n      $derivation_group_names: [String!]!,\n      $plan_end: timestamptz!,\n      $plan_start: timestamptz!,\n    ){\n      events: derived_events(where: {\n        derivation_group_name: {_in: $derivation_group_names},\n        start_time: {_lte: $plan_end},\n        end_time: {_gte: $plan_start}\n      }) {\n        external_event {\n          attributes\n          event_type_name\n          key\n          duration\n          start_time\n          derivation_group_name\n          source_key\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_IMPORT_REQUEST",
+  "kind": "subscription",
+  "name": "SubPlanImportRequest",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "importRequest",
+    "field": "plan_import_request",
+    "args": [
+     "where",
+     "order_by",
+     "limit"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanImportRequest($planId: Int!) {\n      importRequest: plan_import_request(where: {_and: [{plan_id: {_eq: $planId}}, {status: {_neq: \"complete\"}}]}, order_by: {id: desc}, limit: 1) {\n        id\n        plan_id\n        reason\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_IMPORT_REQUESTS",
+  "kind": "subscription",
+  "name": "SubPlanImportRequests",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "importRequests",
+    "field": "plan_import_request",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanImportRequests {\n      importRequests: plan_import_request(where: {status: {_neq: \"complete\"}}) {\n        id\n        plan_id\n        reason\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_LOCKED",
+  "kind": "subscription",
+  "name": "SubPlanLocked",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "planLocked",
+    "field": "plan_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanLocked($planId: Int!) {\n      planLocked: plan_by_pk(id: $planId) {\n        is_locked\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_MERGE_CONFLICTING_ACTIVITIES",
+  "kind": "subscription",
+  "name": "SubPlanMergeConflictingActivities",
+  "vars": [
+   {
+    "name": "merge_request_id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "conflictingActivities",
+    "field": "get_conflicting_activities",
+    "args": [
+     "args"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMergeConflictingActivities($merge_request_id: Int!) {\n      conflictingActivities: get_conflicting_activities(args: { _merge_request_id: $merge_request_id } ) {\n        activity_id,\n        change_type_source,\n        change_type_target,\n        merge_base,\n        resolution\n        source,\n        source_tags,\n        target,\n        target_tags,\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_MERGE_REQUESTS_INCOMING",
+  "kind": "subscription",
+  "name": "SubPlanMergeRequestsIncoming",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "merge_request",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMergeRequestsIncoming($planId: Int!) {\n      merge_request(where: { plan_id_receiving_changes: { _eq: $planId } }, order_by: { id: desc }) {\n        id\n        plan_receiving_changes {\n          id\n          model: mission_model {\n            id\n            name\n            owner\n            version\n          }\n          name\n          owner\n          collaborators {\n            collaborator\n          }\n          start_time\n        }\n        plan_snapshot_supplying_changes {\n          plan {\n            id\n            model: mission_model {\n              id\n              name\n              owner\n              version\n            }\n            name\n            owner\n            collaborators {\n              collaborator\n            }\n            start_time\n          }\n          snapshot_id\n        }\n        requester_username\n        reviewer_username\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_MERGE_REQUESTS_OUTGOING",
+  "kind": "subscription",
+  "name": "SubPlanMergeRequestsOutgoing",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "merge_request",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMergeRequestsOutgoing($planId: Int!) {\n      merge_request(where: { plan_snapshot_supplying_changes: { plan_id: { _eq: $planId } } }, order_by: { id: desc }) {\n        id\n        plan_receiving_changes {\n          id\n          model: mission_model {\n            id\n            name\n            owner\n            version\n          }\n          name\n          owner\n          collaborators {\n            collaborator\n          }\n          start_time\n        }\n        plan_snapshot_supplying_changes {\n          plan {\n            id\n            model: mission_model {\n              id\n              name\n              owner\n              version\n            }\n            name\n            owner\n            collaborators {\n              collaborator\n            }\n            start_time\n          }\n          snapshot_id\n        }\n        requester_username\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_MERGE_REQUEST_IN_PROGRESS",
+  "kind": "subscription",
+  "name": "SubPlanMergeRequestInProgress",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "merge_requests",
+    "field": "merge_request",
+    "args": [
+     "where",
+     "limit"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMergeRequestInProgress($planId: Int!) {\n      merge_requests: merge_request(where: { _and: [{ plan_id_receiving_changes: { _eq: $planId } }, { status: { _eq: \"in-progress\" } }] }, limit: 1 ) {\n        id\n        plan_receiving_changes {\n          id\n          model: mission_model {\n            id\n            name\n            owner\n            version\n          }\n          name\n          owner\n          collaborators {\n            collaborator\n          }\n          start_time\n        }\n        plan_snapshot_supplying_changes {\n          plan {\n            id\n            model: mission_model {\n              id\n              name\n              owner\n              version\n            }\n            name\n            owner\n            collaborators {\n              collaborator\n            }\n            start_time\n          }\n          snapshot_id\n        }\n        requester_username\n        reviewer_username\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_MERGE_REQUEST_STATUS",
+  "kind": "subscription",
+  "name": "SubPlanMergeRequestStatus",
+  "vars": [
+   {
+    "name": "mergeRequestId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "merge_request",
+    "field": "merge_request_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMergeRequestStatus($mergeRequestId: Int!) {\n      merge_request: merge_request_by_pk(id: $mergeRequestId) {\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_METADATA",
+  "kind": "subscription",
+  "name": "SubPlanMetadata",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan_metadata",
+    "field": "plan_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanMetadata($planId: Int!) {\n      plan_metadata: plan_by_pk(id: $planId) {\n        id\n        is_read_only\n        start_time\n        duration\n        model: mission_model {\n          definition_file_id\n          id\n          is_executable\n          name\n          owner\n          parameters {\n            parameters\n          }\n          refresh_activity_type_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          refresh_resource_type_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          refresh_model_parameter_logs(order_by: { created_at: desc }, limit: 1) {\n            error\n            error_message\n            pending\n            success\n          }\n          revision\n          version\n          view {\n            created_at\n            definition\n            id\n            name\n            owner\n            updated_at\n          }\n        }\n        model_id\n        name\n        owner\n        updated_at\n        updated_by\n        created_at\n        collaborators {\n          collaborator\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_REVISION",
+  "kind": "subscription",
+  "name": "SubPlanRevision",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan",
+    "field": "plan_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanRevision($planId: Int!) {\n      plan: plan_by_pk(id: $planId) {\n        revision\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_SNAPSHOTS",
+  "kind": "subscription",
+  "name": "SubPlanSnapshot",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan_snapshots",
+    "field": "plan_snapshot",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanSnapshot($planId: Int!) {\n      plan_snapshots: plan_snapshot(where: { plan_id: { _eq: $planId } }, order_by: { taken_at: desc }) {\n        snapshot_id\n        model_id\n        plan_id\n        plan_start_time\n        plan_duration\n        revision\n        snapshot_name\n        description\n        taken_by\n        taken_at\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_PLAN_TAGS",
+  "kind": "subscription",
+  "name": "SubPlanTags",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "plan",
+    "field": "plan_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubPlanTags($planId: Int!) {\n      plan: plan_by_pk(id: $planId) {\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_CONDITION",
+  "kind": "subscription",
+  "name": "SubSchedulingCondition",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "condition",
+    "field": "scheduling_condition_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingCondition($id: Int!) {\n      condition: scheduling_condition_metadata_by_pk(id: $id) {\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          specification {\n            plan_id\n          }\n        }\n        public\n        tags {\n          tag_id\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          revision\n          tags {\n            tag_id\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_CONDITIONS",
+  "kind": "subscription",
+  "name": "SubSchedulingConditions",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "conditions",
+    "field": "scheduling_condition_metadata",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingConditions {\n      conditions: scheduling_condition_metadata(order_by: { name: asc }) {\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          specification {\n            plan_id\n          }\n        }\n        public\n        tags {\n          tag_id\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          revision\n          tags {\n            tag_id\n          }\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_GOAL",
+  "kind": "subscription",
+  "name": "SubSchedulingGoal",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "goal",
+    "field": "scheduling_goal_metadata_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingGoal($id: Int!) {\n      goal: scheduling_goal_metadata_by_pk(id: $id) {\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          specification {\n            plan_id\n          }\n        }\n        public\n        tags {\n          tag_id\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          parameter_schema\n          revision\n          tags {\n            tag_id\n          }\n          type\n          uploaded_jar_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_GOALS",
+  "kind": "subscription",
+  "name": "SubSchedulingGoals",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "goals",
+    "field": "scheduling_goal_metadata",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingGoals {\n      goals: scheduling_goal_metadata(order_by: { name: asc }) {\n        analyses(order_by: { analysis_id: desc }) {\n          analysis_id\n          goal_id\n          goal_invocation_id\n          goal_revision\n          request {\n            specification_id\n          }\n          satisfied\n          satisfying_activities {\n            activity_id\n          }\n        }\n        created_at\n        description\n        id\n        name\n        models_using {\n          model_id\n        }\n        owner\n        plans_using {\n          specification {\n            plan_id\n          }\n        }\n        public\n        tags {\n          tag_id\n        }\n        updated_at\n        updated_by\n        versions(order_by: {revision: desc}) {\n          author\n          definition\n          parameter_schema\n          revision\n          tags {\n            tag_id\n          }\n          type\n          uploaded_jar_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_PLAN_SPECIFICATION",
+  "kind": "subscription",
+  "name": "SubSchedulingPlanSpecification",
+  "vars": [
+   {
+    "name": "specificationId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "schedulingPlanSpec",
+    "field": "scheduling_specification_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingPlanSpecification($specificationId: Int!) {\n      schedulingPlanSpec: scheduling_specification_by_pk(id: $specificationId) {\n        analysis_only\n        horizon_end\n        horizon_start\n        id\n        plan_id\n        plan_revision\n        revision\n        simulation_arguments\n        conditions {\n          condition_id\n          condition_metadata {\n            name\n            owner\n            public\n            versions {\n              revision\n            }\n          }\n          condition_revision\n          enabled\n          specification_id\n        }\n        goals {\n          enabled\n          goal_definition {\n            analyses(order_by: { analysis_id: desc }) {\n              analysis_id\n              goal_id\n              goal_invocation_id\n              goal_revision\n              request {\n                specification_id\n              }\n              satisfied\n              satisfying_activities {\n                activity_id\n              }\n            }\n          }\n          goal_id\n          goal_invocation_id\n          goal_metadata {\n            name\n            owner\n            public\n            versions(order_by: {revision: desc}, limit: 1) {\n              analyses(order_by: { analysis_id: desc }) {\n                analysis_id\n                goal_id\n                goal_invocation_id\n                goal_revision\n                request {\n                  specification_id\n                }\n                satisfied\n                satisfying_activities {\n                  activity_id\n                }\n              }\n              parameter_schema\n              type\n              revision\n            }\n          }\n          goal_revision\n          priority\n          simulate_after\n          arguments\n          specification_id\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SCHEDULING_REQUESTS",
+  "kind": "subscription",
+  "name": "SubSchedulingRequests",
+  "vars": [
+   {
+    "name": "specId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "scheduling_request",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSchedulingRequests($specId: Int!) {\n      scheduling_request(where: { specification_id: { _eq: $specId } }, order_by: { analysis_id: desc }) {\n        specification_id\n        analysis_id\n        requested_at\n        requested_by\n        status\n        reason\n        dataset_id\n        specification_revision\n        canceled\n      }\n    }"
+ },
+ {
+  "key": "SUB_SEQUENCE_ADAPTATIONS",
+  "kind": "subscription",
+  "name": "SubSequenceAdaptations",
+  "vars": [],
+  "roots": [
+   {
+    "field": "sequence_adaptation",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSequenceAdaptations {\n      sequence_adaptation(order_by: { id: desc }) {\n        adaptation\n        created_at\n        id\n        name\n        updated_by\n      }\n    }"
+ },
+ {
+  "key": "SUB_SEQUENCE_FILTERS",
+  "kind": "subscription",
+  "name": "SubSequenceFilters",
+  "vars": [],
+  "roots": [
+   {
+    "field": "sequence_filter",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSequenceFilters {\n      sequence_filter(order_by: { id: desc }) {\n        filter\n        id\n        model_id\n        name\n      }\n    }"
+ },
+ {
+  "key": "SUB_SEQUENCE_TEMPLATES",
+  "kind": "subscription",
+  "name": "SubSequenceTemplate",
+  "vars": [],
+  "roots": [
+   {
+    "field": "sequence_template",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSequenceTemplate {\n      sequence_template(order_by: { id: desc }) {\n        activity_type\n        id\n        language\n        model_id\n        name\n        owner\n        parcel_id\n        template_definition\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION",
+  "kind": "subscription",
+  "name": "SubSimulation",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulation",
+    "args": [
+     "where",
+     "order_by",
+     "limit"
+    ]
+   }
+  ],
+  "text": "subscription SubSimulation($planId: Int!) {\n      simulation(where: { plan_id: { _eq: $planId } }, order_by: { id: desc }, limit: 1) {\n        arguments\n        id\n        revision\n        simulation_start_time\n        simulation_end_time\n        template: simulation_template {\n          arguments\n          description\n          id\n          owner\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION_DATASET",
+  "kind": "subscription",
+  "name": "SubSimulationDataset",
+  "vars": [
+   {
+    "name": "simulationDatasetId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulation_dataset_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubSimulationDataset($simulationDatasetId: Int!) {\n      simulation_dataset_by_pk(id: $simulationDatasetId) {\n        dataset_id\n        canceled\n        id\n        model_id\n        model_revision\n        plan_revision\n        reason\n        requested_at\n        requested_by\n        simulation_end_time\n        simulation_revision\n        simulation_start_time\n        status\n        extent {\n          extent\n        }\n        reason\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION_DATASETS",
+  "kind": "subscription",
+  "name": "SubSimulationDatasets",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulation",
+    "args": [
+     "where",
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSimulationDatasets($planId: Int!) {\n      simulation(where: { plan_id: { _eq: $planId } }, order_by: { id: desc }) {\n        simulation_datasets(order_by: { id: desc }) {\n          arguments\n          canceled\n          id\n          model_id\n          model_revision\n          dataset_id\n          plan_revision\n          requested_at\n          requested_by\n          simulation_end_time\n          simulation_start_time\n          status\n          extent {\n            extent\n          }\n          reason\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION_DATASETS_ALL",
+  "kind": "subscription",
+  "name": "SubSimulationDatasetsAll",
+  "vars": [],
+  "roots": [
+   {
+    "field": "simulation_dataset",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubSimulationDatasetsAll {\n      simulation_dataset(order_by: { id: desc }) {\n        canceled\n        id\n        status\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION_DATASET_LATEST",
+  "kind": "subscription",
+  "name": "SubSimulationDatasetLatest",
+  "vars": [
+   {
+    "name": "planId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "simulation",
+    "args": [
+     "where",
+     "order_by",
+     "limit"
+    ]
+   }
+  ],
+  "text": "subscription SubSimulationDatasetLatest($planId: Int!) {\n      simulation(where: { plan_id: { _eq: $planId } }, order_by: { id: desc }, limit: 1) {\n        simulation_datasets(order_by: { id: desc }, limit: 1) {\n          dataset_id\n          canceled\n          id\n          model_id\n          model_revision\n          plan_revision\n          reason\n          requested_at\n          requested_by\n          simulation_end_time\n          simulation_revision\n          simulation_start_time\n          status\n          extent {\n            extent\n          }\n          reason\n        }\n      }\n    }"
+ },
+ {
+  "key": "SUB_SIMULATION_TEMPLATES",
+  "kind": "subscription",
+  "name": "SubSimTemplates",
+  "vars": [
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "templates",
+    "field": "simulation_template",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "subscription SubSimTemplates($modelId: Int!) {\n      templates: simulation_template(where: { model_id: { _eq: $modelId } }) {\n        arguments\n        description\n        id\n        owner\n      }\n    }"
+ },
+ {
+  "key": "SUB_TAGS",
+  "kind": "subscription",
+  "name": "SubTags",
+  "vars": [],
+  "roots": [
+   {
+    "field": "tags",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubTags {\n      tags(order_by: { name: desc })  {\n        color\n        created_at\n        id\n        name\n        owner\n      }\n    }"
+ },
+ {
+  "key": "SUB_USERS",
+  "kind": "subscription",
+  "name": "SubUsers",
+  "vars": [],
+  "roots": [
+   {
+    "field": "users",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubUsers {\n      users(order_by: { username: desc }) {\n        username\n      }\n    }"
+ },
+ {
+  "key": "SUB_USER_SEQUENCES",
+  "kind": "subscription",
+  "name": "SubUserSequences",
+  "vars": [],
+  "roots": [
+   {
+    "field": "user_sequence",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubUserSequences {\n      user_sequence(order_by: { id: desc }) {\n        created_at\n        definition\n        id\n        is_locked\n        name\n        owner\n        parcel_id\n        updated_at\n        workspace_id\n      }\n    }"
+ },
+ {
+  "key": "SUB_VIEWS",
+  "kind": "subscription",
+  "name": "SubViews",
+  "vars": [],
+  "roots": [
+   {
+    "alias": "views",
+    "field": "view",
+    "args": []
+   }
+  ],
+  "text": "subscription SubViews {\n      views: view {\n        created_at\n        id\n        name\n        owner\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_WORKSPACE",
+  "kind": "subscription",
+  "name": "SubWorkspace",
+  "vars": [
+   {
+    "name": "workspaceId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "workspace",
+    "field": "workspace_by_pk",
+    "args": [
+     "id"
+    ]
+   }
+  ],
+  "text": "subscription SubWorkspace($workspaceId: Int!) {\n      workspace: workspace_by_pk(id: $workspaceId) {\n        collaborators {\n          collaborator\n        }\n        created_at\n        disk_location\n        id\n        name\n        owner\n        parcel_id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "SUB_WORKSPACES",
+  "kind": "subscription",
+  "name": "SubWorkspaces",
+  "vars": [],
+  "roots": [
+   {
+    "field": "workspace",
+    "args": [
+     "order_by"
+    ]
+   }
+  ],
+  "text": "subscription SubWorkspaces {\n      workspace(order_by: { id: desc }) {\n        collaborators {\n          collaborator\n        }\n        created_at\n        disk_location\n        id\n        name\n        owner\n        parcel_id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_ACTION_DEFINITION",
+  "kind": "mutation",
+  "name": "UpdateActionDefinition",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "actionDefinitionSetInput",
+    "type": "action_definition_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_action_definition_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateActionDefinition($id: Int!, $actionDefinitionSetInput: action_definition_set_input!) {\n      update_action_definition_by_pk(\n        pk_columns: { id: $id }, _set: $actionDefinitionSetInput\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_ACTION_DEFINITION_VERSION",
+  "kind": "mutation",
+  "name": "UpdateActionDefinitionVersion",
+  "vars": [
+   {
+    "name": "actionDefinitionId",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "set",
+    "type": "action_definition_version_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_action_definition_version_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateActionDefinitionVersion(\n      $actionDefinitionId: Int!,\n      $revision: Int!,\n      $set: action_definition_version_set_input!\n    ) {\n      update_action_definition_version_by_pk(\n        pk_columns: { action_definition_id: $actionDefinitionId, revision: $revision },\n        _set: $set\n      ) {\n        action_definition_id\n        revision\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_ACTIVITY_DIRECTIVE",
+  "kind": "mutation",
+  "name": "UpdateActivityDirective",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "activityDirectiveSetInput",
+    "type": "activity_directive_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_activity_directive_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateActivityDirective($id: Int!, $plan_id: Int!, $activityDirectiveSetInput: activity_directive_set_input!) {\n      update_activity_directive_by_pk(\n        pk_columns: { id: $id, plan_id: $plan_id }, _set: $activityDirectiveSetInput\n      ) {\n        anchor_id\n        anchored_to_start\n        applied_preset {\n          preset_id\n          preset_applied {\n            name\n            arguments\n          }\n        }\n        arguments\n        created_at\n        id\n        last_modified_arguments_at\n        last_modified_at\n        metadata\n        name\n        plan_id\n        source_scheduling_goal_id\n        source_scheduling_goal_invocation_id\n        start_offset\n        tags {\n          tag {\n            color\n            id\n            name\n          }\n        }\n        type\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_ACTIVITY_DIRECTIVES",
+  "kind": "mutation",
+  "name": "UpdateActivityDirective",
+  "vars": [
+   {
+    "name": "updates",
+    "type": "[activity_directive_updates!]!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_activity_directive_many",
+    "args": [
+     "updates"
+    ]
+   }
+  ],
+  "text": "mutation UpdateActivityDirective($updates: [activity_directive_updates!]!) {\n      update_activity_directive_many(\n        updates: $updates\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_ACTIVITY_PRESET",
+  "kind": "mutation",
+  "name": "UpdateActivityPreset",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "activityPresetSetInput",
+    "type": "activity_presets_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_activity_presets_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateActivityPreset($id: Int!, $activityPresetSetInput: activity_presets_set_input!) {\n      update_activity_presets_by_pk(\n        pk_columns: { id: $id }, _set: $activityPresetSetInput\n      ) {\n        id\n        model_id\n        name\n        associated_activity_type\n        arguments\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_DEFINITION_TAGS",
+  "kind": "mutation",
+  "name": "UpdateConstraintTags",
+  "vars": [
+   {
+    "name": "constraintId",
+    "type": "Int!"
+   },
+   {
+    "name": "constraintRevision",
+    "type": "Int!"
+   },
+   {
+    "name": "tags",
+    "type": "[constraint_definition_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "insertConstraintDefinitionTags",
+    "field": "insert_constraint_definition_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteConstraintDefinitionTags",
+    "field": "delete_constraint_definition_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintTags($constraintId: Int!, $constraintRevision: Int!, $tags: [constraint_definition_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      insertConstraintDefinitionTags: insert_constraint_definition_tags(objects: $tags, on_conflict: {\n        constraint: constraint_definition_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteConstraintDefinitionTags: delete_constraint_definition_tags(\n        where: {\n          tag_id: { _in: $tagIdsToDelete },\n          _and: {\n            constraint_id: { _eq: $constraintId },\n            constraint_revision: { _eq: $constraintRevision }\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_METADATA",
+  "kind": "mutation",
+  "name": "UpdateConstraintMetadata",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "constraintMetadata",
+    "type": "constraint_metadata_set_input!"
+   },
+   {
+    "name": "tags",
+    "type": "[constraint_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateConstraintMetadata",
+    "field": "update_constraint_metadata_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   },
+   {
+    "alias": "insertConstraintTags",
+    "field": "insert_constraint_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteConstraintTags",
+    "field": "delete_constraint_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintMetadata($id: Int!, $constraintMetadata: constraint_metadata_set_input!, $tags: [constraint_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      updateConstraintMetadata: update_constraint_metadata_by_pk(\n        pk_columns: { id: $id }, _set: $constraintMetadata\n      ) {\n        id\n      }\n      insertConstraintTags: insert_constraint_tags(objects: $tags, on_conflict: {\n        constraint: constraint_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteConstraintTags: delete_constraint_tags(where: { tag_id: { _in: $tagIdsToDelete }, constraint_id: { _eq: $id } }) {\n          affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_MODEL_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateConstraintModelSpecification",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "jsonb"
+   },
+   {
+    "name": "constraintInvocationId",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "order",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateConstraintModelSpecification",
+    "field": "update_constraint_model_specification_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintModelSpecification($arguments: jsonb, $constraintInvocationId: Int!, $revision: Int!, $order: Int!) {\n      updateConstraintModelSpecification: update_constraint_model_specification_by_pk(\n        pk_columns: { invocation_id: $constraintInvocationId  },\n        _set: {\n          arguments: $arguments,\n          constraint_revision: $revision,\n          order: $order\n        }\n      ) {\n        constraint_revision\n        order\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateConstraintModelSpecifications",
+  "vars": [
+   {
+    "name": "constraintSpecsToAdd",
+    "type": "[constraint_model_specification_insert_input!]!"
+   },
+   {
+    "name": "constraintInvocationIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "addConstraintModelSpecifications",
+    "field": "insert_constraint_model_specification",
+    "args": [
+     "objects"
+    ]
+   },
+   {
+    "alias": "deleteConstraintModelSpecifications",
+    "field": "delete_constraint_model_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintModelSpecifications($constraintSpecsToAdd: [constraint_model_specification_insert_input!]!, $constraintInvocationIdsToDelete: [Int!]! = []) {\n      addConstraintModelSpecifications: insert_constraint_model_specification(\n        objects: $constraintSpecsToAdd\n      ) {\n        returning {\n          constraint_revision\n          order\n        }\n      }\n      deleteConstraintModelSpecifications: delete_constraint_model_specification(\n        where: {\n          invocation_id: { _in: $constraintInvocationIdsToDelete }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateConstraintPlanSpecification",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "jsonb"
+   },
+   {
+    "name": "constraintInvocationId",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "enabled",
+    "type": "Boolean!"
+   },
+   {
+    "name": "order",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateConstraintPlanSpecification",
+    "field": "update_constraint_specification_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintPlanSpecification($arguments: jsonb, $constraintInvocationId: Int!, $revision: Int!, $enabled: Boolean!, $order: Int!) {\n      updateConstraintPlanSpecification: update_constraint_specification_by_pk(\n        pk_columns: { invocation_id: $constraintInvocationId },\n        _set: {\n          arguments: $arguments,\n          constraint_revision: $revision,\n          enabled: $enabled,\n          order: $order\n        }\n      ) {\n        constraint_revision\n        enabled\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_CONSTRAINT_PLAN_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateConstraintPlanSpecifications",
+  "vars": [
+   {
+    "name": "constraintSpecsToInsert",
+    "type": "[constraint_specification_insert_input!]!"
+   },
+   {
+    "name": "constraintSpecIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "insertConstraintPlanSpecifications",
+    "field": "insert_constraint_specification",
+    "args": [
+     "objects"
+    ]
+   },
+   {
+    "alias": "deleteConstraintPlanSpecifications",
+    "field": "delete_constraint_specification",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateConstraintPlanSpecifications($constraintSpecsToInsert: [constraint_specification_insert_input!]!, $constraintSpecIdsToDelete: [Int!]! = []) {\n      insertConstraintPlanSpecifications: insert_constraint_specification(\n        objects: $constraintSpecsToInsert,\n      ) {\n        returning {\n          constraint_revision\n          enabled\n        }\n      }\n      deleteConstraintPlanSpecifications: delete_constraint_specification(\n        where: {\n          invocation_id: { _in: $constraintSpecIdsToDelete },\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_DERIVATION_GROUP_ACKNOWLEDGED",
+  "kind": "mutation",
+  "name": "UpdateDerivationGroupAcknowledged",
+  "vars": [
+   {
+    "name": "derivation_group_name",
+    "type": "String!"
+   },
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "acknowledged",
+    "type": "Boolean!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updatePlanDerivationGroup",
+    "field": "update_plan_derivation_group_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateDerivationGroupAcknowledged($derivation_group_name: String!, $plan_id: Int!, $acknowledged: Boolean!) {\n      updatePlanDerivationGroup: update_plan_derivation_group_by_pk(pk_columns: {derivation_group_name: $derivation_group_name, plan_id: $plan_id}, _set: {acknowledged: $acknowledged}) {\n        derivation_group_name,\n        plan_id,\n        acknowledged\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_MODEL",
+  "kind": "mutation",
+  "name": "UpdateModel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "model",
+    "type": "mission_model_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateModel",
+    "field": "update_mission_model_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateModel($id: Int!, $model: mission_model_set_input!) {\n      updateModel: update_mission_model_by_pk(\n        pk_columns: { id: $id }, _set: $model\n      ) {\n        id\n        description\n        name\n        version\n        owner\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_PARCEL",
+  "kind": "mutation",
+  "name": "UpdateParcel",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "parcel",
+    "type": "parcel_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateParcel",
+    "field": "update_parcel_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateParcel($id: Int!, $parcel: parcel_set_input!) {\n      updateParcel: update_parcel_by_pk(\n        pk_columns: { id: $id }, _set: $parcel\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_PLAN",
+  "kind": "mutation",
+  "name": "UpdatePlan",
+  "vars": [
+   {
+    "name": "plan_id",
+    "type": "Int!"
+   },
+   {
+    "name": "plan",
+    "type": "plan_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updatePlan",
+    "field": "update_plan_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdatePlan($plan_id: Int!, $plan: plan_set_input!) {\n      updatePlan: update_plan_by_pk(\n        pk_columns: { id: $plan_id }, _set: $plan\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_PLAN_SNAPSHOT",
+  "kind": "mutation",
+  "name": "UpdatePlanSnapshot",
+  "vars": [
+   {
+    "name": "snapshot_id",
+    "type": "Int!"
+   },
+   {
+    "name": "planSnapshot",
+    "type": "plan_snapshot_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updatePlanSnapshot",
+    "field": "update_plan_snapshot_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdatePlanSnapshot($snapshot_id: Int!, $planSnapshot: plan_snapshot_set_input!) {\n      updatePlanSnapshot: update_plan_snapshot_by_pk(\n        pk_columns: { snapshot_id: $snapshot_id }, _set: $planSnapshot\n      ) {\n        snapshot_id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_CONDITION_DEFINITION_TAGS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingConditionTags",
+  "vars": [
+   {
+    "name": "conditionId",
+    "type": "Int!"
+   },
+   {
+    "name": "conditionRevision",
+    "type": "Int!"
+   },
+   {
+    "name": "tags",
+    "type": "[scheduling_condition_definition_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "insertSchedulingConditionDefinitionTags",
+    "field": "insert_scheduling_condition_definition_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingConditionDefinitionTags",
+    "field": "delete_scheduling_condition_definition_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingConditionTags($conditionId: Int!, $conditionRevision: Int!, $tags: [scheduling_condition_definition_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      insertSchedulingConditionDefinitionTags: insert_scheduling_condition_definition_tags(objects: $tags, on_conflict: {\n        constraint: scheduling_condition_definition_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteSchedulingConditionDefinitionTags: delete_scheduling_condition_definition_tags(\n        where: {\n          tag_id: { _in: $tagIdsToDelete },\n          _and: {\n            condition_id: { _eq: $conditionId },\n            condition_revision: { _eq: $conditionRevision }\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_CONDITION_METADATA",
+  "kind": "mutation",
+  "name": "UpdateSchedulingConditionMetadata",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "conditionMetadata",
+    "type": "scheduling_condition_metadata_set_input!"
+   },
+   {
+    "name": "tags",
+    "type": "[scheduling_condition_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingConditionMetadata",
+    "field": "update_scheduling_condition_metadata_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   },
+   {
+    "alias": "insertSchedulingConditionTags",
+    "field": "insert_scheduling_condition_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingConditionTags",
+    "field": "delete_scheduling_condition_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingConditionMetadata($id: Int!, $conditionMetadata: scheduling_condition_metadata_set_input!, $tags: [scheduling_condition_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      updateSchedulingConditionMetadata: update_scheduling_condition_metadata_by_pk(\n        pk_columns: { id: $id }, _set: $conditionMetadata\n      ) {\n        id\n      }\n      insertSchedulingConditionTags: insert_scheduling_condition_tags(objects: $tags, on_conflict: {\n        constraint: scheduling_condition_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteSchedulingConditionTags: delete_scheduling_condition_tags(where: { tag_id: { _in: $tagIdsToDelete }, condition_id: { _eq: $id } }) {\n          affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_CONDITION_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingConditionModelSpecifications",
+  "vars": [
+   {
+    "name": "conditionSpecsToUpdate",
+    "type": "[scheduling_model_specification_conditions_insert_input!]!"
+   },
+   {
+    "name": "conditionIdsToDelete",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingConditionModelSpecifications",
+    "field": "insert_scheduling_model_specification_conditions",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingConditionModelSpecifications",
+    "field": "delete_scheduling_model_specification_conditions",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingConditionModelSpecifications($conditionSpecsToUpdate: [scheduling_model_specification_conditions_insert_input!]!, $conditionIdsToDelete: [Int!]! = [], $modelId: Int!) {\n      updateSchedulingConditionModelSpecifications: insert_scheduling_model_specification_conditions(\n        objects: $conditionSpecsToUpdate,\n        on_conflict: {\n          constraint: scheduling_model_specification_conditions_pkey,\n          update_columns: [condition_revision]\n        },\n      ) {\n        returning {\n          condition_revision\n        }\n      }\n      deleteSchedulingConditionModelSpecifications: delete_scheduling_model_specification_conditions(\n        where: {\n          condition_id: { _in: $conditionIdsToDelete },\n          _and: {\n            model_id: { _eq: $modelId }\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_CONDITION_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateSchedulingConditionPlanSpecification",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "enabled",
+    "type": "Boolean!"
+   },
+   {
+    "name": "specificationId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingConditionPlanSpecification",
+    "field": "update_scheduling_specification_conditions_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingConditionPlanSpecification($id: Int!, $revision: Int!, $enabled: Boolean!, $specificationId: Int!) {\n      updateSchedulingConditionPlanSpecification: update_scheduling_specification_conditions_by_pk(\n        pk_columns: { condition_id: $id, specification_id: $specificationId },\n        _set: {\n          condition_revision: $revision,\n          enabled: $enabled\n        }\n      ) {\n        condition_revision\n        enabled\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_CONDITION_PLAN_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingConditionPlanSpecifications",
+  "vars": [
+   {
+    "name": "conditionSpecsToUpdate",
+    "type": "[scheduling_specification_conditions_insert_input!]!"
+   },
+   {
+    "name": "conditionSpecIdsToDelete",
+    "type": "[Int!]!"
+   },
+   {
+    "name": "specificationId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingConditionPlanSpecifications",
+    "field": "insert_scheduling_specification_conditions",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingConditionPlanSpecifications",
+    "field": "delete_scheduling_specification_conditions",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingConditionPlanSpecifications($conditionSpecsToUpdate: [scheduling_specification_conditions_insert_input!]!, $conditionSpecIdsToDelete: [Int!]! = [], $specificationId: Int!) {\n      updateSchedulingConditionPlanSpecifications: insert_scheduling_specification_conditions(\n        objects: $conditionSpecsToUpdate,\n        on_conflict: {\n          constraint: scheduling_specification_conditions_primary_key,\n          update_columns: [condition_revision, enabled]\n        },\n      ) {\n        returning {\n          condition_revision\n          enabled\n        }\n      }\n      deleteSchedulingConditionPlanSpecifications: delete_scheduling_specification_conditions(\n        where: {\n          condition_id: { _in: $conditionSpecIdsToDelete },\n          _and: {\n            specification_id: { _eq: $specificationId },\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_DEFINITION_TAGS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalTags",
+  "vars": [
+   {
+    "name": "goalId",
+    "type": "Int!"
+   },
+   {
+    "name": "goalRevision",
+    "type": "Int!"
+   },
+   {
+    "name": "tags",
+    "type": "[scheduling_goal_definition_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "insertSchedulingGoalDefinitionTags",
+    "field": "insert_scheduling_goal_definition_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingGoalDefinitionTags",
+    "field": "delete_scheduling_goal_definition_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalTags($goalId: Int!, $goalRevision: Int!, $tags: [scheduling_goal_definition_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      insertSchedulingGoalDefinitionTags: insert_scheduling_goal_definition_tags(objects: $tags, on_conflict: {\n        constraint: scheduling_goal_definition_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteSchedulingGoalDefinitionTags: delete_scheduling_goal_definition_tags(\n        where: {\n          tag_id: { _in: $tagIdsToDelete },\n          _and: {\n            goal_id: { _eq: $goalId },\n            goal_revision: { _eq: $goalRevision }\n          }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_METADATA",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalMetadata",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "goalMetadata",
+    "type": "scheduling_goal_metadata_set_input!"
+   },
+   {
+    "name": "tags",
+    "type": "[scheduling_goal_tags_insert_input!]!"
+   },
+   {
+    "name": "tagIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingGoalMetadata",
+    "field": "update_scheduling_goal_metadata_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   },
+   {
+    "alias": "insertSchedulingGoalTags",
+    "field": "insert_scheduling_goal_tags",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingGoalTags",
+    "field": "delete_scheduling_goal_tags",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalMetadata($id: Int!, $goalMetadata: scheduling_goal_metadata_set_input!, $tags: [scheduling_goal_tags_insert_input!]!, $tagIdsToDelete: [Int!]!) {\n      updateSchedulingGoalMetadata: update_scheduling_goal_metadata_by_pk(\n        pk_columns: { id: $id }, _set: $goalMetadata\n      ) {\n        id\n      }\n      insertSchedulingGoalTags: insert_scheduling_goal_tags(objects: $tags, on_conflict: {\n        constraint: scheduling_goal_tags_pkey,\n        update_columns: []\n      }) {\n        affected_rows\n      }\n      deleteSchedulingGoalTags: delete_scheduling_goal_tags(where: { tag_id: { _in: $tagIdsToDelete }, goal_id: { _eq: $id } } ) {\n          affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_MODEL_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalModelSpecification",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "jsonb"
+   },
+   {
+    "name": "goalInvocationId",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "priority",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingGoalModelSpecification",
+    "field": "update_scheduling_model_specification_goals_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalModelSpecification($arguments: jsonb, $goalInvocationId: Int!, $revision: Int!, $priority: Int!) {\n      updateSchedulingGoalModelSpecification: update_scheduling_model_specification_goals_by_pk(\n        pk_columns: { goal_invocation_id: $goalInvocationId },\n        _set: {\n          arguments: $arguments,\n          goal_revision: $revision,\n          priority: $priority,\n        }\n      ) {\n        goal_revision\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_MODEL_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalModelSpecifications",
+  "vars": [
+   {
+    "name": "goalSpecsToAdd",
+    "type": "[scheduling_model_specification_goals_insert_input!]!"
+   },
+   {
+    "name": "goalIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "addSchedulingGoalModelSpecifications",
+    "field": "insert_scheduling_model_specification_goals",
+    "args": [
+     "objects",
+     "on_conflict"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingGoalModelSpecifications",
+    "field": "delete_scheduling_model_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalModelSpecifications($goalSpecsToAdd: [scheduling_model_specification_goals_insert_input!]!, $goalIdsToDelete: [Int!]! = []) {\n      addSchedulingGoalModelSpecifications: insert_scheduling_model_specification_goals(\n        objects: $goalSpecsToAdd,\n        on_conflict: {\n          constraint: scheduling_model_specification_goals_pkey,\n        },\n      ) {\n        returning {\n          goal_revision\n        }\n      }\n      deleteSchedulingGoalModelSpecifications: delete_scheduling_model_specification_goals(\n        where: {\n          goal_invocation_id: { _in: $goalIdsToDelete }\n        }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_PLAN_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalPlanSpecification",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "jsonb"
+   },
+   {
+    "name": "goal_invocation_id",
+    "type": "Int!"
+   },
+   {
+    "name": "revision",
+    "type": "Int!"
+   },
+   {
+    "name": "enabled",
+    "type": "Boolean!"
+   },
+   {
+    "name": "priority",
+    "type": "Int!"
+   },
+   {
+    "name": "simulateAfter",
+    "type": "Boolean!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingGoalPlanSpecification",
+    "field": "update_scheduling_specification_goals_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalPlanSpecification($arguments: jsonb, $goal_invocation_id: Int!, $revision: Int!, $enabled: Boolean!, $priority: Int!, $simulateAfter: Boolean!) {\n      updateSchedulingGoalPlanSpecification: update_scheduling_specification_goals_by_pk(\n        pk_columns: { goal_invocation_id: $goal_invocation_id },\n        _set: {\n          goal_revision: $revision,\n          enabled: $enabled,\n          priority: $priority,\n          simulate_after: $simulateAfter\n          arguments: $arguments\n        }\n      ) {\n        enabled\n        goal_revision\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_GOAL_PLAN_SPECIFICATIONS",
+  "kind": "mutation",
+  "name": "UpdateSchedulingGoalPlanSpecifications",
+  "vars": [
+   {
+    "name": "goalSpecsToInsert",
+    "type": "[scheduling_specification_goals_insert_input!]!"
+   },
+   {
+    "name": "goalSpecIdsToDelete",
+    "type": "[Int!]!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "insertSchedulingGoalPlanSpecifications",
+    "field": "insert_scheduling_specification_goals",
+    "args": [
+     "objects"
+    ]
+   },
+   {
+    "alias": "deleteSchedulingGoalPlanSpecifications",
+    "field": "delete_scheduling_specification_goals",
+    "args": [
+     "where"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingGoalPlanSpecifications($goalSpecsToInsert: [scheduling_specification_goals_insert_input!]!, $goalSpecIdsToDelete: [Int!]! = []) {\n      insertSchedulingGoalPlanSpecifications: insert_scheduling_specification_goals(\n        objects: $goalSpecsToInsert,\n      ) {\n        returning {\n          enabled\n          goal_revision\n        }\n      }\n      deleteSchedulingGoalPlanSpecifications: delete_scheduling_specification_goals(\n        where: { goal_invocation_id: { _in: $goalSpecIdsToDelete } }\n      ) {\n        affected_rows\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SCHEDULING_SPECIFICATION",
+  "kind": "mutation",
+  "name": "UpdateSchedulingSpec",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "spec",
+    "type": "scheduling_specification_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSchedulingSpec",
+    "field": "update_scheduling_specification_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSchedulingSpec($id: Int!, $spec: scheduling_specification_set_input!) {\n      updateSchedulingSpec: update_scheduling_specification_by_pk(\n        pk_columns: { id: $id }, _set: $spec\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SEQUENCE_FILTER",
+  "kind": "mutation",
+  "name": "UpdateSequenceFilter",
+  "vars": [
+   {
+    "name": "filterId",
+    "type": "Int!"
+   },
+   {
+    "name": "filterName",
+    "type": "String!"
+   },
+   {
+    "name": "filter",
+    "type": "jsonb!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSequenceFilter",
+    "field": "update_sequence_filter_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSequenceFilter($filterId: Int!, $filterName: String!, $filter: jsonb!) {\n      updateSequenceFilter: update_sequence_filter_by_pk(\n        pk_columns: { id: $filterId }, _set: { filter: $filter, name: $filterName }\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SEQUENCE_TEMPLATE",
+  "kind": "mutation",
+  "name": "UpdateSequenceTemplate",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "definition",
+    "type": "String!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSequenceTemplate",
+    "field": "update_sequence_template_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSequenceTemplate($id: Int!, $definition: String!) {\n      updateSequenceTemplate: update_sequence_template_by_pk(\n        pk_columns: { id: $id }, _set: { template_definition: $definition }\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SIMULATION",
+  "kind": "mutation",
+  "name": "UpdateSimulation",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "simulation",
+    "type": "simulation_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateSimulation",
+    "field": "update_simulation_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSimulation($id: Int!, $simulation: simulation_set_input!) {\n      updateSimulation: update_simulation_by_pk(\n        pk_columns: { id: $id }, _set: $simulation\n      ) {\n        id\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_SIMULATION_TEMPLATE",
+  "kind": "mutation",
+  "name": "UpdateSimulationTemplate",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "simulationTemplateSetInput",
+    "type": "simulation_template_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_simulation_template_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateSimulationTemplate($id: Int!, $simulationTemplateSetInput: simulation_template_set_input!) {\n      update_simulation_template_by_pk(pk_columns: {id: $id}, _set: $simulationTemplateSetInput) {\n        arguments\n        id\n        description\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_TAG",
+  "kind": "mutation",
+  "name": "UpdateTag",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "tagSetInput",
+    "type": "tags_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "update_tags_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateTag($id: Int!, $tagSetInput: tags_set_input!) {\n      update_tags_by_pk(pk_columns: {id: $id}, _set: $tagSetInput) {\n        color\n        created_at\n        id\n        name\n        owner\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_USER_SEQUENCE",
+  "kind": "mutation",
+  "name": "UpdateUserSequence",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "sequence",
+    "type": "user_sequence_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updateUserSequence",
+    "field": "update_user_sequence_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateUserSequence($id: Int!, $sequence: user_sequence_set_input!) {\n      updateUserSequence: update_user_sequence_by_pk(\n        pk_columns: { id: $id }, _set: $sequence\n      ) {\n        id\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_VIEW",
+  "kind": "mutation",
+  "name": "UpdateView",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "view",
+    "type": "view_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updatedView",
+    "field": "update_view_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateView($id: Int!, $view: view_set_input!) {\n      updatedView: update_view_by_pk(\n        pk_columns: { id: $id }, _set: $view\n      ) {\n        created_at\n        definition\n        id\n        name\n        owner\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "UPDATE_WORKSPACE",
+  "kind": "mutation",
+  "name": "UpdateWorkspace",
+  "vars": [
+   {
+    "name": "id",
+    "type": "Int!"
+   },
+   {
+    "name": "workspace",
+    "type": "workspace_set_input!"
+   }
+  ],
+  "roots": [
+   {
+    "alias": "updatedWorkspace",
+    "field": "update_workspace_by_pk",
+    "args": [
+     "pk_columns",
+     "_set"
+    ]
+   }
+  ],
+  "text": "mutation UpdateWorkspace($id: Int!, $workspace: workspace_set_input!) {\n      updatedWorkspace: update_workspace_by_pk(\n        pk_columns: { id: $id }, _set: $workspace\n      ) {\n        created_at\n        id\n        name\n        owner\n        updated_at\n      }\n    }"
+ },
+ {
+  "key": "VALIDATE_ACTIVITY_ARGUMENTS",
+  "kind": "query",
+  "name": "ValidateActivityArguments",
+  "vars": [
+   {
+    "name": "arguments",
+    "type": "ActivityArguments!"
+   },
+   {
+    "name": "activityTypeName",
+    "type": "String!"
+   },
+   {
+    "name": "modelId",
+    "type": "Int!"
+   }
+  ],
+  "roots": [
+   {
+    "field": "validateActivityArguments",
+    "args": [
+     "activityArguments",
+     "activityTypeName",
+     "missionModelId"
+    ]
+   }
+  ],
+  "text": "query ValidateActivityArguments($arguments: ActivityArguments!, $activityTypeName: String!, $modelId: Int!) {\n      validateActivityArguments(\n        activityArguments: $arguments,\n        activityTypeName: $activityTypeName,\n        missionModelId: $modelId\n      ) {\n        errors {\n          message\n          subjects\n        }\n        success\n      }\n    }"
+ }
+]

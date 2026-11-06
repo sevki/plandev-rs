@@ -2,5 +2,6 @@
 members = [
     "merlin-framework",
     "scheduler-driver",
+    "plandev-contract",
 ]
 resolver = "2"
